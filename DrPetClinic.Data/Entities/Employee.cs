@@ -9,12 +9,11 @@ namespace DrPetClinic.Data.Entities
         public Guid Id { get; set; }
         public string? Description { get; set; }
         public EmployeeType Type { get; set; }
+
         public ICollection<ConsultationTime>? ConsultationTimes { get; set; }
+        public ICollection<Treatment>? Treatments { get; set; }
 
-        public void Configure(EntityTypeBuilder<Employee> builder)
-        {
-
-        }
+        public void Configure(EntityTypeBuilder<Employee> builder) { }
     }
 
 }

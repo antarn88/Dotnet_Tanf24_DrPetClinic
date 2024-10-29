@@ -2,9 +2,9 @@
 {
     public enum EntryType
     {
-        Examination,
-        Control,
-        Surgery,
-        PrescribingMedicine
+        Examination = 1,
+        Control = 2,
+        Surgery = 3,
+        PrescribingMedicine = 4
     }
 }

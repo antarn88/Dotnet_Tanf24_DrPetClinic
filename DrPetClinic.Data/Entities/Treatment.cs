@@ -9,14 +9,37 @@ namespace DrPetClinic.Data.Entities
         public string? Description { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
+
         public Employee Doctor { get; set; }
+        public Guid DoctorId { get; set; }
         public Animal Animal { get; set; }
+        public Guid AnimalId { get; set; }
         public Person Person { get; set; }
-        public ICollection<Entry> Entries { get; set; } = new List<Entry>();
+        public Guid PersonId { get; set; }
+        public ICollection<Entry> Entries { get; set; }
 
         public void Configure(EntityTypeBuilder<Treatment> builder)
         {
+            builder
+                .HasOne(x => x.Doctor)
+                .WithMany(x => x.Treatments)
+                .HasForeignKey(x => x.DoctorId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            builder
+                .HasOne(x => x.Animal)
+                .WithMany(x => x.Treatments)
+                .HasForeignKey(x => x.AnimalId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(x => x.Person)
+                .WithMany(x => x.Treatments)
+                .HasForeignKey(x => x.PersonId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

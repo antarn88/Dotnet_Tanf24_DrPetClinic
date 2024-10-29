@@ -2,7 +2,7 @@
 {
     public enum EmployeeType
     {
-        Doctor,
-        Assistant
+        Doctor = 1,
+        Assistant = 2,
     }
 }

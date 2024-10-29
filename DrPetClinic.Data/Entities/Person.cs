@@ -6,15 +6,14 @@ namespace DrPetClinic.Data.Entities
     public class Person : IEntityTypeConfiguration<Person>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
         public DateTime BirthDate { get; set; }
-        public string Residence { get; set; } = string.Empty;
+        public string Residence { get; set; }
         public string? Description { get; set; }
-        public ICollection<Animal> Animals { get; set; } = new List<Animal>();
 
-        public void Configure(EntityTypeBuilder<Person> builder)
-        {
+        public ICollection<Animal> Animals { get; set; }
+        public ICollection<Treatment> Treatments { get; set; }
 
-        }
+        public void Configure(EntityTypeBuilder<Person> builder) { }
     }
 }
