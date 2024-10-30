@@ -21,6 +21,10 @@ namespace DrPetClinic.Data.Entities
         public void Configure(EntityTypeBuilder<Treatment> builder)
         {
             builder
+                .Property(x => x.Amount)
+                .HasPrecision(18, 0);
+
+            builder
                 .HasOne(x => x.Doctor)
                 .WithMany(x => x.Treatments)
                 .HasForeignKey(x => x.DoctorId)

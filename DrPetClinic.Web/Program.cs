@@ -1,3 +1,7 @@
+using DrPetClinic.Bll;
+using DrPetClinic.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace DrPetClinic.Web
 {
     public class Program
@@ -8,6 +12,8 @@ namespace DrPetClinic.Web
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddDbContext<DrPetClinicDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DrPetClinicDB")));
+            builder.Services.AddScoped<ClinicService>();
 
             var app = builder.Build();
 
