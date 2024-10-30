@@ -12,7 +12,7 @@ namespace DrPetClinic.Data.Entities
         public bool IsAvailable { get; set; } = true;
         public string? Description { get; set; }
 
-        public Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
         public Guid EmployeeId { get; set; }
 
         public void Configure(EntityTypeBuilder<ConsultationTime> builder)

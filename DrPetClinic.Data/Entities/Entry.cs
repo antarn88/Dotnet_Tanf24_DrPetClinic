@@ -15,7 +15,7 @@ namespace DrPetClinic.Data.Entities
         public Guid? HistoryId { get; set; }
         public Entry? History { get; set; }
 
-        public Treatment Treatment { get; set; }
+        public Treatment? Treatment { get; set; }
         public Guid TreatmentId { get; set; }
 
         public void Configure(EntityTypeBuilder<Entry> builder)

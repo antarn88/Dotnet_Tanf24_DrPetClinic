@@ -4,6 +4,7 @@ using DrPetClinic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrPetClinic.Data.Migrations
 {
     [DbContext(typeof(DrPetClinicDBContext))]
-    partial class DrPetClinicDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241030203405_MakeEmployeeNullableInConsultationTime")]
+    partial class MakeEmployeeNullableInConsultationTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace DrPetClinic.Data.Migrations
 
                     b.HasIndex("OwnersId");
 
-                    b.ToTable("AnimalPerson", (string)null);
+                    b.ToTable("AnimalPerson");
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.Animal", b =>
@@ -67,7 +70,7 @@ namespace DrPetClinic.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Animals", (string)null);
+                    b.ToTable("Animals");
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.ConsultationTime", b =>
@@ -98,7 +101,7 @@ namespace DrPetClinic.Data.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("ConsultationTimes", (string)null);
+                    b.ToTable("ConsultationTimes");
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.Employee", b =>
@@ -119,7 +122,7 @@ namespace DrPetClinic.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.Entry", b =>
@@ -152,7 +155,7 @@ namespace DrPetClinic.Data.Migrations
 
                     b.HasIndex("TreatmentId");
 
-                    b.ToTable("Entries", (string)null);
+                    b.ToTable("Entries");
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.Person", b =>
@@ -177,7 +180,7 @@ namespace DrPetClinic.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("People", (string)null);
+                    b.ToTable("People");
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.Treatment", b =>
@@ -213,7 +216,7 @@ namespace DrPetClinic.Data.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("Treatments", (string)null);
+                    b.ToTable("Treatments");
                 });
 
             modelBuilder.Entity("AnimalPerson", b =>

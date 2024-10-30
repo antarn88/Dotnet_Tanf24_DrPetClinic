@@ -13,8 +13,8 @@ namespace DrPetClinic.Data.Entities
         public string Status { get; set; }
         public string? Description { get; set; }
 
-        public ICollection<Person> Owners { get; set; }
-        public ICollection<Treatment> Treatments { get; set; }
+        public ICollection<Person> Owners { get; set; } = [];
+        public ICollection<Treatment> Treatments { get; set; } = [];
 
         public void Configure(EntityTypeBuilder<Animal> builder) { }
     }

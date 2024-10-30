@@ -10,13 +10,16 @@ namespace DrPetClinic.Data.Entities
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
 
-        public Employee Doctor { get; set; }
         public Guid DoctorId { get; set; }
-        public Animal Animal { get; set; }
+        public Employee? Doctor { get; set; }
+
         public Guid AnimalId { get; set; }
-        public Person Person { get; set; }
+        public Animal? Animal { get; set; }
+
         public Guid PersonId { get; set; }
-        public ICollection<Entry> Entries { get; set; }
+        public Person? Person { get; set; }
+
+        public ICollection<Entry> Entries { get; set; } = new List<Entry>();
 
         public void Configure(EntityTypeBuilder<Treatment> builder)
         {
