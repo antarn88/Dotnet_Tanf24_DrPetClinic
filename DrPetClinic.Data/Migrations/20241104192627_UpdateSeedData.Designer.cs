@@ -4,6 +4,7 @@ using DrPetClinic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrPetClinic.Data.Migrations
 {
     [DbContext(typeof(DrPetClinicDBContext))]
-    partial class DrPetClinicDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241104192627_UpdateSeedData")]
+    partial class UpdateSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +75,7 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d73e2118-4f6d-4719-a265-b90c50369ead"),
+                            Id = new Guid("e1a58661-2023-4132-98fd-ff4663f18ab6"),
                             BirthDate = new DateTime(2020, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Ő a falu legszorgalmasabb terelője.",
                             Name = "Bodri",
@@ -82,7 +85,7 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e7b89889-83ea-4b00-8e9c-96d2d76de738"),
+                            Id = new Guid("67df453c-c08d-492c-93cf-53cda281e7d0"),
                             BirthDate = new DateTime(2019, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A kajáért él-hal, de csak akkor enged közel, ha akar.",
                             Name = "Cirmi",
@@ -136,10 +139,10 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("47caa033-d855-48f7-9cb1-07aeff1db2d5"),
+                            Id = new Guid("2904afbd-e2d0-4e95-9f19-e78d92089802"),
                             DayOfWeek = 1,
                             Description = "Általános rendelési idő hétfőn.",
-                            EmployeeId = new Guid("e2ecce8e-9bbe-4ea8-9678-cef23f7b6ca4"),
+                            EmployeeId = new Guid("34fbb070-ab45-41e9-be6c-c6367c0e1328"),
                             EndTime = new TimeSpan(0, 17, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)10,
@@ -172,14 +175,14 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e2ecce8e-9bbe-4ea8-9678-cef23f7b6ca4"),
+                            Id = new Guid("34fbb070-ab45-41e9-be6c-c6367c0e1328"),
                             Description = "Szakértő állatorvos.",
                             Name = "Dr. Vakarcs Pál",
                             Type = 1
                         },
                         new
                         {
-                            Id = new Guid("584a47e1-1a49-4ce7-a786-9137ddba4490"),
+                            Id = new Guid("c5b01d5e-68e5-40d0-930e-47dbb1ad1af5"),
                             Description = "A klinika segédje, minden munkában ott van.",
                             Name = "Hajdu Eszter",
                             Type = 2
@@ -221,11 +224,11 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d4c14f6e-4168-4074-918a-4fea84f94254"),
+                            Id = new Guid("a5768f27-78b5-41b0-9583-3ab37a7c6a51"),
                             Description = "Alapvizsgálat",
                             Length = 30,
                             Medicine = "Védőoltás",
-                            TreatmentId = new Guid("df99b360-33c8-4f35-816f-5561fb83ba67"),
+                            TreatmentId = new Guid("82f241ba-e5ef-47d6-a494-452630e2c953"),
                             Type = 1
                         });
                 });
@@ -257,7 +260,7 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f5bf810c-a032-4a08-8a42-aa2de50d17ec"),
+                            Id = new Guid("31dc8872-2813-4c3b-976b-54422d122611"),
                             BirthDate = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A falu híres állatorvosa.",
                             Name = "Kovács János",
@@ -265,7 +268,7 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4595696c-1036-409e-b8ca-7be653bee204"),
+                            Id = new Guid("49b5714e-c1b2-4a45-af0b-14de38f751db"),
                             BirthDate = new DateTime(1992, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Kutyakozmetikus, minden kutyát széppé varázsol.",
                             Name = "Szabó Katalin",
@@ -311,13 +314,13 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("df99b360-33c8-4f35-816f-5561fb83ba67"),
+                            Id = new Guid("82f241ba-e5ef-47d6-a494-452630e2c953"),
                             Amount = 15000m,
-                            AnimalId = new Guid("d73e2118-4f6d-4719-a265-b90c50369ead"),
+                            AnimalId = new Guid("e1a58661-2023-4132-98fd-ff4663f18ab6"),
                             Date = new DateTime(2023, 10, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Rutin vizsgálat",
-                            DoctorId = new Guid("e2ecce8e-9bbe-4ea8-9678-cef23f7b6ca4"),
-                            PersonId = new Guid("f5bf810c-a032-4a08-8a42-aa2de50d17ec")
+                            DoctorId = new Guid("34fbb070-ab45-41e9-be6c-c6367c0e1328"),
+                            PersonId = new Guid("31dc8872-2813-4c3b-976b-54422d122611")
                         });
                 });
 

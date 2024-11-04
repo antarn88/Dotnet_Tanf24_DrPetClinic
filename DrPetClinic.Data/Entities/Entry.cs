@@ -20,6 +20,8 @@ namespace DrPetClinic.Data.Entities
 
         public void Configure(EntityTypeBuilder<Entry> builder)
         {
+            builder.HasKey(x => x.Id);
+
             builder
               .HasOne(x => x.History)
               .WithMany()

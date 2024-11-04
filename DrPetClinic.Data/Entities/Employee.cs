@@ -14,7 +14,10 @@ namespace DrPetClinic.Data.Entities
         public ICollection<ConsultationTime>? ConsultationTimes { get; set; } = [];
         public ICollection<Treatment>? Treatments { get; set; } = [];
 
-        public void Configure(EntityTypeBuilder<Employee> builder) { }
+        public void Configure(EntityTypeBuilder<Employee> builder)
+        {
+            builder.HasKey(x => x.Id);
+        }
     }
 
 }

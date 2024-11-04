@@ -18,6 +18,13 @@ namespace DrPetClinic.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<Employee>().HasData(SeedData.GetEmployees());
+            modelBuilder.Entity<Animal>().HasData(SeedData.GetAnimals());
+            modelBuilder.Entity<Person>().HasData(SeedData.GetPeople());
+            modelBuilder.Entity<Treatment>().HasData(SeedData.GetTreatments());
+            modelBuilder.Entity<Entry>().HasData(SeedData.GetEntries());
+            modelBuilder.Entity<ConsultationTime>().HasData(SeedData.GetConsultationTimes());
         }
     }
 }

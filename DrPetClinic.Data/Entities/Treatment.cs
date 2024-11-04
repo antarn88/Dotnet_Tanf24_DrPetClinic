@@ -19,10 +19,12 @@ namespace DrPetClinic.Data.Entities
         public Guid PersonId { get; set; }
         public Person? Person { get; set; }
 
-        public ICollection<Entry> Entries { get; set; } = new List<Entry>();
+        public ICollection<Entry> Entries { get; set; } = [];
 
         public void Configure(EntityTypeBuilder<Treatment> builder)
         {
+            builder.HasKey(x => x.Id);
+
             builder
                 .Property(x => x.Amount)
                 .HasPrecision(18, 0);

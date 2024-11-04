@@ -4,6 +4,7 @@ using DrPetClinic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrPetClinic.Data.Migrations
 {
     [DbContext(typeof(DrPetClinicDBContext))]
-    partial class DrPetClinicDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241104184339_UpdateConsultationTimeModel")]
+    partial class UpdateConsultationTimeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,28 +71,6 @@ namespace DrPetClinic.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Animals");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d73e2118-4f6d-4719-a265-b90c50369ead"),
-                            BirthDate = new DateTime(2020, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ő a falu legszorgalmasabb terelője.",
-                            Name = "Bodri",
-                            Species = "Kutya",
-                            Status = "Jó egészségnek örvend",
-                            Type = "Puli"
-                        },
-                        new
-                        {
-                            Id = new Guid("e7b89889-83ea-4b00-8e9c-96d2d76de738"),
-                            BirthDate = new DateTime(2019, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A kajáért él-hal, de csak akkor enged közel, ha akar.",
-                            Name = "Cirmi",
-                            Species = "Macska",
-                            Status = "Kissé morcos",
-                            Type = "Sziámi"
-                        });
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.ConsultationTime", b =>
@@ -132,21 +113,6 @@ namespace DrPetClinic.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("ConsultationTimes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("47caa033-d855-48f7-9cb1-07aeff1db2d5"),
-                            DayOfWeek = 1,
-                            Description = "Általános rendelési idő hétfőn.",
-                            EmployeeId = new Guid("e2ecce8e-9bbe-4ea8-9678-cef23f7b6ca4"),
-                            EndTime = new TimeSpan(0, 17, 0, 0, 0),
-                            IsAvailable = true,
-                            Month = (byte)10,
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Week = (byte)1,
-                            Year = (short)2023
-                        });
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.Employee", b =>
@@ -168,22 +134,6 @@ namespace DrPetClinic.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e2ecce8e-9bbe-4ea8-9678-cef23f7b6ca4"),
-                            Description = "Szakértő állatorvos.",
-                            Name = "Dr. Vakarcs Pál",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("584a47e1-1a49-4ce7-a786-9137ddba4490"),
-                            Description = "A klinika segédje, minden munkában ott van.",
-                            Name = "Hajdu Eszter",
-                            Type = 2
-                        });
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.Entry", b =>
@@ -217,17 +167,6 @@ namespace DrPetClinic.Data.Migrations
                     b.HasIndex("TreatmentId");
 
                     b.ToTable("Entries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d4c14f6e-4168-4074-918a-4fea84f94254"),
-                            Description = "Alapvizsgálat",
-                            Length = 30,
-                            Medicine = "Védőoltás",
-                            TreatmentId = new Guid("df99b360-33c8-4f35-816f-5561fb83ba67"),
-                            Type = 1
-                        });
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.Person", b =>
@@ -253,24 +192,6 @@ namespace DrPetClinic.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("People");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("f5bf810c-a032-4a08-8a42-aa2de50d17ec"),
-                            BirthDate = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A falu híres állatorvosa.",
-                            Name = "Kovács János",
-                            Residence = "Budapest"
-                        },
-                        new
-                        {
-                            Id = new Guid("4595696c-1036-409e-b8ca-7be653bee204"),
-                            BirthDate = new DateTime(1992, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Kutyakozmetikus, minden kutyát széppé varázsol.",
-                            Name = "Szabó Katalin",
-                            Residence = "Debrecen"
-                        });
                 });
 
             modelBuilder.Entity("DrPetClinic.Data.Entities.Treatment", b =>
@@ -307,18 +228,6 @@ namespace DrPetClinic.Data.Migrations
                     b.HasIndex("PersonId");
 
                     b.ToTable("Treatments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("df99b360-33c8-4f35-816f-5561fb83ba67"),
-                            Amount = 15000m,
-                            AnimalId = new Guid("d73e2118-4f6d-4719-a265-b90c50369ead"),
-                            Date = new DateTime(2023, 10, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Rutin vizsgálat",
-                            DoctorId = new Guid("e2ecce8e-9bbe-4ea8-9678-cef23f7b6ca4"),
-                            PersonId = new Guid("f5bf810c-a032-4a08-8a42-aa2de50d17ec")
-                        });
                 });
 
             modelBuilder.Entity("AnimalPerson", b =>

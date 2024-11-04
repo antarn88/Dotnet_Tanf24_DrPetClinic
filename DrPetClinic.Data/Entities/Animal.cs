@@ -16,6 +16,9 @@ namespace DrPetClinic.Data.Entities
         public ICollection<Person> Owners { get; set; } = [];
         public ICollection<Treatment> Treatments { get; set; } = [];
 
-        public void Configure(EntityTypeBuilder<Animal> builder) { }
+        public void Configure(EntityTypeBuilder<Animal> builder)
+        {
+            builder.HasKey(x => x.Id);
+        }
     }
 }
