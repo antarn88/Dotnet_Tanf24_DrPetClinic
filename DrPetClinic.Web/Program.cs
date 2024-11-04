@@ -1,4 +1,6 @@
-using DrPetClinic.Bll;
+using DrPetClinic.Bll.Interfaces;
+using DrPetClinic.Bll.MappingProfiles;
+using DrPetClinic.Bll.Services;
 using DrPetClinic.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +15,8 @@ namespace DrPetClinic.Web
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<DrPetClinicDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DrPetClinicDB")));
-            builder.Services.AddScoped<ClinicService>();
+            builder.Services.AddAutoMapper(typeof(ConsultationTimeProfile));
+            builder.Services.AddScoped<IConsultationTimeService, ConsultationTimeService>();
 
             var app = builder.Build();
 

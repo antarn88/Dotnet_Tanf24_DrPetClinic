@@ -69,8 +69,6 @@ namespace DrPetClinic.Data
             };
         }
 
-
-
         public static List<Employee> GetEmployees()
         {
             return new List<Employee>
