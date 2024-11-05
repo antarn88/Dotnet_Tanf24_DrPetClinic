@@ -15,8 +15,22 @@ namespace DrPetClinic.Web
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<DrPetClinicDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DrPetClinicDB")));
+
+            // Automapperek
             builder.Services.AddAutoMapper(typeof(ConsultationTimeProfile));
+            builder.Services.AddAutoMapper(typeof(AnimalProfile));
+            builder.Services.AddAutoMapper(typeof(EmployeeProfile));
+            builder.Services.AddAutoMapper(typeof(EntryProfile));
+            builder.Services.AddAutoMapper(typeof(PersonProfile));
+            builder.Services.AddAutoMapper(typeof(TreatmentProfile));
+
+            // Service-ek
             builder.Services.AddScoped<IConsultationTimeService, ConsultationTimeService>();
+            builder.Services.AddScoped<IAnimalService, AnimalService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IEntryService, EntryService>();
+            builder.Services.AddScoped<IPersonService, PersonService>();
+            builder.Services.AddScoped<ITreatmentService, TreatmentService>();
 
             var app = builder.Build();
 

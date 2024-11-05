@@ -8,8 +8,10 @@ namespace DrPetClinic.Bll.MappingProfiles
     {
         public ConsultationTimeProfile()
         {
-            CreateMap<ConsultationTime, ConsultationTimeDto>().ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.Employee)); // Employee automatikus leképezése
-            CreateMap<Employee, EmployeeDto>();
+            CreateMap<ConsultationTime, ConsultationTimeDto>()
+                .ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.Employee)); // Employee automatikus leképezése
+
+            CreateMap<Employee, EmployeeSummaryDto>();
             CreateMap<CreateConsultationTimeDto, ConsultationTime>();
         }
     }
