@@ -1,66 +1,132 @@
-﻿@page
+﻿@page "/Rendelesek/{Ev:int}/{Honap}"
 @model DrPetClinic.Web.Pages.ConsultationTimes.IndexModel
-
+@using DrPetClinic.Bll.Helpers;
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Rendelési Idők";
+    var monthMapJson = Newtonsoft.Json.JsonConvert.SerializeObject(DateHelper.HungarianMonthNames);
 }
 
-<h1>Index</h1>
+<div class="row mt-5">
+    <h1>Orvosi Rendelési Idők</h1>
+</div>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ConsultationTime[0].DayOfWeek)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConsultationTime[0].StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConsultationTime[0].EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConsultationTime[0].IsAvailable)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConsultationTime[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConsultationTime[0].Employee)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.ConsultationTime) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DayOfWeek)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAvailable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<div class="mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-primary" onclick="changeMonth('previous')">⬅️ Előző hónap</button>
+        <button class="btn btn-primary" onclick="changeMonth('next')">Következő hónap ➡️</button>
+    </div>
+
+    <table class="table table-striped table-hover table-bordered consultation-times-monthly-table">
+        <thead>
+            <tr>
+                <th>Orvos</th>
+                <th>Év</th>
+                <th>Hónap</th>
+                <th>Rendelési Idők</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.GroupedConsultationTimes.Any())
+            {
+                <tr>
+                    <td colspan="4" class="text-center">A megadott időszakra nincsenek megjeleníthető rendelések.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var group in Model.GroupedConsultationTimes)
+                {
+                    <tr>
+                        <td>@group.Key</td>
+                        <td>@group.Value.First().Year</td>
+                        <td>@Model.GetHungarianMonthName(group.Value.First().Month)</td>
+                        <td>@Model.FormatWeeklyConsultationTimes(group.Value)</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        async function changeMonth(direction) {
+            const url = new URL(window.location.href);
+            let year = parseInt(url.pathname.split("/")[2]);
+            let month = url.pathname.split("/")[3];
+
+            const monthMap = @Html.Raw(monthMapJson);
+
+            let monthNumber = isNaN(parseInt(month)) ? monthMap[month.toLowerCase()] : parseInt(month);
+            let isNumericMonth = !isNaN(parseInt(month));
+
+            if (isNaN(monthNumber) || (!isNumericMonth && !monthMap.hasOwnProperty(month.toLowerCase()))) {
+                console.warn("Érvénytelen hónap, URL nem frissül.");
+                return;
+            }
+
+            if (direction === 'previous') {
+                monthNumber--;
+                if (monthNumber < 1) {
+                    monthNumber = 12;
+                    year--;
+                }
+            } else if (direction === 'next') {
+                monthNumber++;
+                if (monthNumber > 12) {
+                    monthNumber = 1;
+                    year++;
+                }
+            }
+
+            const monthNames = Object.keys(monthMap);
+            const newMonthSegment = isNumericMonth
+                ? monthNumber.toString().padStart(2, '0')
+                : monthNames[monthNumber - 1];
+            const newUrl = `/Rendelesek/${year}/${newMonthSegment}`;
+
+            const currentDate = new Date();
+            const selectedDate = new Date(year, monthNumber - 1);
+
+            if (selectedDate < new Date(currentDate.getFullYear(), currentDate.getMonth())) {
+                const emptyTableRow = `
+                            <tr>
+                                <td colspan="4" class="text-center">A megadott időszakra nincsenek megjeleníthető rendelések.</td>
+                            </tr>`;
+                document.querySelector(".consultation-times-monthly-table").innerHTML = `
+                            <table class="table table-striped table-hover table-bordered consultation-times-monthly-table">
+                                <thead>
+                                    <tr>
+                                        <th>Orvos</th>
+                                        <th>Év</th>
+                                        <th>Hónap</th>
+                                        <th>Rendelési Idők</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${emptyTableRow}
+                                </tbody>
+                            </table>`;
+                window.history.pushState({}, "", newUrl);
+                return;
+            }
+
+            try {
+                const response = await fetch(newUrl);
+                if (!response.ok) throw new Error("Adatok lekérése sikertelen.");
+
+                const data = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, "text/html");
+                const newTable = doc.querySelector("table");
+
+                document.querySelector(".consultation-times-monthly-table").innerHTML = "";
+                document.querySelector(".consultation-times-monthly-table").appendChild(newTable);
+            } catch (error) {
+                console.error("Hiba történt:", error);
+            }
+
+            window.history.pushState({}, "", newUrl);
+        }
+    </script>
 }
-    </tbody>
-</table>

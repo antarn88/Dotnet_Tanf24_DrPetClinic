@@ -6,6 +6,8 @@ namespace DrPetClinic.Data
     public static class SeedData
     {
         private static readonly Guid DrVakarcsId = Guid.NewGuid();
+        private static readonly Guid DrSzaboId = Guid.NewGuid();
+        private static readonly Guid DrKissId = Guid.NewGuid();
         private static readonly Guid HajduEszterId = Guid.NewGuid();
         private static readonly Guid BodriId = Guid.NewGuid();
         private static readonly Guid KovacsJanosId = Guid.NewGuid();
@@ -84,6 +86,24 @@ namespace DrPetClinic.Data
                 },
                 new Employee
                 {
+                    Id = DrSzaboId,
+                    Name = "Dr. Szabó Éva",
+                    Type = EmployeeType.Doctor,
+                    Description = "Sebész specialista.",
+                    ConsultationTimes = new List<ConsultationTime>(),
+                    Treatments = new List<Treatment>()
+                },
+                new Employee
+                {
+                    Id = DrKissId,
+                    Name = "Dr. Kiss Tamás",
+                    Type = EmployeeType.Doctor,
+                    Description = "Egzotikus állatok szakértője.",
+                    ConsultationTimes = new List<ConsultationTime>(),
+                    Treatments = new List<Treatment>()
+                },
+                new Employee
+                {
                     Id = HajduEszterId,
                     Name = "Hajdu Eszter",
                     Type = EmployeeType.Assistant,
@@ -98,11 +118,11 @@ namespace DrPetClinic.Data
         {
             return new List<ConsultationTime>
             {
-               new ConsultationTime
+                new ConsultationTime
                 {
                     Id = Guid.NewGuid(),
-                    Year = 2023,
-                    Month = 10,
+                    Year = 2024,
+                    Month = 11,
                     Week = 1,
                     DayOfWeek = DayOfWeek.Monday,
                     StartTime = new TimeSpan(9, 0, 0),
@@ -110,6 +130,72 @@ namespace DrPetClinic.Data
                     IsAvailable = true,
                     Description = "Általános rendelési idő hétfőn.",
                     EmployeeId = DrVakarcsId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 2,
+                    DayOfWeek = DayOfWeek.Tuesday,
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(16, 0, 0),
+                    IsAvailable = true,
+                    Description = "Általános rendelési idő kedden.",
+                    EmployeeId = DrVakarcsId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 3,
+                    DayOfWeek = DayOfWeek.Thursday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(14, 0, 0),
+                    IsAvailable = true,
+                    Description = "Csütörtöki rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 12,
+                    Week = 1,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(15, 0, 0),
+                    IsAvailable = true,
+                    Description = "Szerdai rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 12,
+                    Week = 2,
+                    DayOfWeek = DayOfWeek.Friday,
+                    StartTime = new TimeSpan(10, 0, 0),
+                    EndTime = new TimeSpan(18, 0, 0),
+                    IsAvailable = true,
+                    Description = "Pénteki rendelés.",
+                    EmployeeId = DrKissId
+                },
+                // További rendelési idők minden doktorhoz, különböző napokra
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 12,
+                    Week = 3,
+                    DayOfWeek = DayOfWeek.Monday,
+                    StartTime = new TimeSpan(11, 0, 0),
+                    EndTime = new TimeSpan(16, 0, 0),
+                    IsAvailable = true,
+                    Description = "Hétfői rendelés.",
+                    EmployeeId = DrKissId
                 }
             };
         }
@@ -149,4 +235,3 @@ namespace DrPetClinic.Data
         }
     }
 }
-
