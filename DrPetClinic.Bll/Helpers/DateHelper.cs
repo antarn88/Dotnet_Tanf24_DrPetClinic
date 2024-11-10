@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using DrPetClinic.Bll.DTOs;
+using System.Globalization;
 
 namespace DrPetClinic.Bll.Helpers
 {
@@ -14,27 +15,37 @@ namespace DrPetClinic.Bll.Helpers
 
         public static int GetMonthNumberFromName(string monthName)
         {
-            if (!HungarianMonthNames.TryGetValue(monthName, out int monthNumber))
-                throw new ArgumentException("Érvénytelen hónap név.", nameof(monthName));
-
-            return monthNumber;
+            return HungarianMonthNames.TryGetValue(monthName, out var monthNumber) ? monthNumber : throw new ArgumentException("Érvénytelen hónap név.", nameof(monthName));
         }
-
-        public static string GetHungarianDayOfWeek(DayOfWeek day) => day switch
-        {
-            DayOfWeek.Monday => "Hétfő",
-            DayOfWeek.Tuesday => "Kedd",
-            DayOfWeek.Wednesday => "Szerda",
-            DayOfWeek.Thursday => "Csütörtök",
-            DayOfWeek.Friday => "Péntek",
-            DayOfWeek.Saturday => "Szombat",
-            DayOfWeek.Sunday => "Vasárnap",
-            _ => "Ismeretlen nap"
-        };
 
         public static string GetHungarianMonthName(int month)
         {
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
+        }
+
+        public static string GetHungarianDayOfWeek(DayOfWeek day)
+        {
+            return day switch
+            {
+                DayOfWeek.Monday => "Hétfő",
+                DayOfWeek.Tuesday => "Kedd",
+                DayOfWeek.Wednesday => "Szerda",
+                DayOfWeek.Thursday => "Csütörtök",
+                DayOfWeek.Friday => "Péntek",
+                DayOfWeek.Saturday => "Szombat",
+                DayOfWeek.Sunday => "Vasárnap",
+                _ => "Ismeretlen nap"
+            };
+        }
+
+        public static string FormatWeeklyConsultationTimes(List<ConsultationTimeDto> consultationTimes)
+        {
+            return string.Join("<br/>", consultationTimes
+                .GroupBy(ct => ct.Week)
+                .Select(weekGroup =>
+                    $"{weekGroup.Key}. hét - " +
+                    string.Join("; ", weekGroup.Select(ct =>
+                        $"{GetHungarianDayOfWeek(ct.DayOfWeek)} {ct.StartTime:hh\\:mm}-{ct.EndTime:hh\\:mm}"))));
         }
     }
 }
