@@ -47,5 +47,12 @@ namespace DrPetClinic.Bll.Helpers
                     string.Join("; ", weekGroup.Select(ct =>
                         $"{GetHungarianDayOfWeek(ct.DayOfWeek)} {ct.StartTime:hh\\:mm}-{ct.EndTime:hh\\:mm}"))));
         }
+
+        public static string FormatDailyConsultationTimes(List<ConsultationTimeDto> consultationTimes)
+        {
+            return string.Join("<br/>", consultationTimes
+                .OrderBy(ct => ct.DayOfWeek)
+                .Select(ct => $"{GetHungarianDayOfWeek(ct.DayOfWeek)} {ct.StartTime:hh\\:mm}-{ct.EndTime:hh\\:mm}"));
+        }
     }
 }

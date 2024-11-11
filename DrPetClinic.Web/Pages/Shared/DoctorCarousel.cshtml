@@ -1,0 +1,34 @@
+﻿@model List<DrPetClinic.Bll.DTOs.EmployeeDto>
+
+<div id="doctorCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var doctor = Model[i];
+            var isActive = i == 0 ? "active" : "";
+
+            <div class="carousel-item @isActive">
+                <div class="card mx-auto d-flex flex-column align-items-center text-light doctor-card" style="width: 18rem; height: 100%;">
+                    <div class="d-flex align-items-center justify-content-center" style="height: 250px; width: 100%;">
+                        <img src="~/images/doctors/doctor@((i % 5) + 1).jpg" class="card-img-top img-fluid" alt="@doctor.Name" style="height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="card-body text-center d-flex justify-content-center align-items-center flex-column">
+                        <a asp-page="/DoctorDetails/Index" asp-route-OrvosId="@doctor.Id" class="text-decoration-none">
+                            <h5 class="card-title cursor-pointer">@doctor.Name</h5>
+                        </a>
+                        <p class="card-text">@doctor.Description</p>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#doctorCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Előző</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#doctorCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Következő</span>
+    </button>
+</div>

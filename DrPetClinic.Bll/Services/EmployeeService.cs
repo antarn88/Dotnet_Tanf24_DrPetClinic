@@ -2,6 +2,7 @@
 using DrPetClinic.Bll.DTOs;
 using DrPetClinic.Data;
 using DrPetClinic.Data.Entities;
+using DrPetClinic.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace DrPetClinic.Bll.Services
@@ -28,6 +29,16 @@ namespace DrPetClinic.Bll.Services
                 .ToListAsync();
 
             return _mapper.Map<List<EmployeeDetailsDto>>(employees);
+        }
+
+        public async Task<List<EmployeeDto>> GetDoctorsAsync()
+        {
+            var doctors = await _context.Employees
+                .Where(e => e.Type == EmployeeType.Doctor)
+                .OrderBy(e => e.Name)
+                .ToListAsync();
+
+            return _mapper.Map<List<EmployeeDto>>(doctors);
         }
 
         // Egy alkalmazott lekérdezése ID alapján a ConsultationTimes és Treatments adatokkal

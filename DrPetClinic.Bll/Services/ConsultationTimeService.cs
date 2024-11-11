@@ -5,6 +5,7 @@ using DrPetClinic.Bll.Interfaces;
 using DrPetClinic.Data;
 using DrPetClinic.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace DrPetClinic.Bll.Services
 {
@@ -34,6 +35,59 @@ namespace DrPetClinic.Bll.Services
         {
             int monthNumber = DateHelper.GetMonthNumberFromName(month);
             return await GetConsultationTimesByYearAndMonthAsync(year, monthNumber);
+        }
+
+        public async Task<Dictionary<string, List<ConsultationTimeDto>>> GetGroupedConsultationTimesByYearAndMonthAsync(int year, int month)
+        {
+            var consultationTimes = await _context.ConsultationTimes
+                .Include(c => c.Employee)
+                .Where(ct => ct.Year == year && ct.Month == month)
+                .OrderBy(ct => ct.DayOfWeek)
+                .ToListAsync();
+
+            var groupedConsultationTimes = consultationTimes
+                .GroupBy(ct => ct.Employee!.Name)
+                .ToDictionary(g => g.Key, g => _mapper.Map<List<ConsultationTimeDto>>(g.ToList()));
+
+            return groupedConsultationTimes;
+        }
+
+        public async Task<Dictionary<string, List<ConsultationTimeDto>>> GetCurrentWeekGroupedConsultationTimesAsync()
+        {
+            var currentYear = DateTime.Now.Year;
+            var currentWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
+                DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+            var weeklyConsultationTimes = await _context.ConsultationTimes
+                .Include(c => c.Employee)
+                .Where(ct => ct.Year == currentYear && ct.Week == currentWeek)
+                .OrderBy(ct => ct.DayOfWeek)
+                .ToListAsync();
+
+            return weeklyConsultationTimes
+                .GroupBy(ct => ct.Employee!.Name)
+                .ToDictionary(g => g.Key, g => _mapper.Map<List<ConsultationTimeDto>>(g.ToList()));
+        }
+        public async Task<List<ConsultationTimeDto>> GetConsultationTimesForNextThreeMonthsAsync(Guid employeeId)
+        {
+            var today = DateTime.Today;
+            var threeMonthsLater = today.AddMonths(3);
+
+            int startYear = today.Year;
+            int startMonth = today.Month;
+            int endYear = threeMonthsLater.Year;
+            int endMonth = threeMonthsLater.Month;
+
+            var consultationTimes = await _context.ConsultationTimes
+                .Include(ct => ct.Employee)
+                .Where(ct => ct.EmployeeId == employeeId && ((ct.Year == startYear && ct.Month >= startMonth) || (ct.Year == endYear && ct.Month <= endMonth) || (ct.Year > startYear && ct.Year < endYear)))
+                .OrderBy(ct => ct.Year)
+                .ThenBy(ct => ct.Month)
+                .ThenBy(ct => ct.Week)
+                .ThenBy(ct => ct.DayOfWeek)
+                .ToListAsync();
+
+            return _mapper.Map<List<ConsultationTimeDto>>(consultationTimes);
         }
 
         public async Task<List<ConsultationTimeDto>> GetPagedConsultationTimesAsync(int page, int limit)

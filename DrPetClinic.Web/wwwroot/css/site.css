@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.carousel-item {
+    height: 400px;
+    background-color: var(--bs-gray-500);
+}
+
+.doctor-card {
+    background-color: var(--bs-gray-900);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+    user-select: none;
+}

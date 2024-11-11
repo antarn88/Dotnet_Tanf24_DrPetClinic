@@ -1,0 +1,40 @@
+﻿@page "/Orvosok/{OrvosId:guid}"
+@model DrPetClinic.Web.Pages.DoctorDetails.IndexModel
+@{
+    ViewData["Title"] = $"{Model.DoctorName} rendelései";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (!Model.ConsultationTimes.Any())
+{
+    <p>Nincs elérhető rendelés a következő három hónapra.</p>
+}
+else
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Év</th>
+                <th>Hónap</th>
+                <th>Hét</th>
+                <th>Rendelési Idő</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var consultation in Model.ConsultationTimes)
+            {
+                <tr>
+                    <td>@consultation.Year</td>
+                    <td>@Model.GetHungarianMonthName(consultation.Month)</td>
+                    <td>@consultation.Week</td>
+                    <td>
+                        @Model.GetHungarianDayOfWeek(consultation.DayOfWeek)
+                        @consultation.StartTime.ToString(@"hh\:mm") - @consultation.EndTime.ToString(@"hh\:mm")
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}

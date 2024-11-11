@@ -30,12 +30,7 @@ namespace DrPetClinic.Web.Pages.ConsultationTimes
                 }
             }
 
-            var consultationTimes = await _consultationTimeService.GetConsultationTimesByYearAndMonthAsync(ev!.Value, monthNumber);
-
-            // TODO Service szinten kezelni?
-            GroupedConsultationTimes = consultationTimes
-                .GroupBy(ct => ct.Employee.Name)
-                .ToDictionary(g => g.Key, g => g.ToList());
+            GroupedConsultationTimes = await _consultationTimeService.GetGroupedConsultationTimesByYearAndMonthAsync(ev!.Value, monthNumber);
         }
     }
 }
