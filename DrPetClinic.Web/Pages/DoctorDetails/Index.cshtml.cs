@@ -17,7 +17,7 @@ namespace DrPetClinic.Web.Pages.DoctorDetails
             _employeeService = employeeService;
         }
 
-        public List<ConsultationTimeDto> ConsultationTimes { get; set; } = new();
+        public Dictionary<string, List<ConsultationTimeDto>> ConsultationTimes { get; set; }
         public string DoctorName { get; set; } = string.Empty;
 
         public async Task OnGetAsync(Guid orvosId)
@@ -25,7 +25,7 @@ namespace DrPetClinic.Web.Pages.DoctorDetails
             var doctor = await _employeeService.GetEmployeeByIdAsync(orvosId);
 
             DoctorName = doctor.Name;
-            ConsultationTimes = await _consultationTimeService.GetConsultationTimesForNextThreeMonthsAsync(orvosId);
+            ConsultationTimes = await _consultationTimeService.GetConsultationTimesForNextThreeMonthsGroupedByWeekAsync(orvosId);
         }
 
         public string GetHungarianMonthName(int month) => DateHelper.GetHungarianMonthName(month);

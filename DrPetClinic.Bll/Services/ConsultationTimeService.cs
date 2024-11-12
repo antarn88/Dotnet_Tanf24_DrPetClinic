@@ -34,6 +34,7 @@ namespace DrPetClinic.Bll.Services
         public async Task<List<ConsultationTimeDto>> GetConsultationTimesByYearAndMonthAsync(int year, string month)
         {
             int monthNumber = DateHelper.GetMonthNumberFromName(month);
+
             return await GetConsultationTimesByYearAndMonthAsync(year, monthNumber);
         }
 
@@ -55,8 +56,7 @@ namespace DrPetClinic.Bll.Services
         public async Task<Dictionary<string, List<ConsultationTimeDto>>> GetCurrentWeekGroupedConsultationTimesAsync()
         {
             var currentYear = DateTime.Now.Year;
-            var currentWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
-                DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            var currentWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 
             var weeklyConsultationTimes = await _context.ConsultationTimes
                 .Include(c => c.Employee)
@@ -68,7 +68,7 @@ namespace DrPetClinic.Bll.Services
                 .GroupBy(ct => ct.Employee!.Name)
                 .ToDictionary(g => g.Key, g => _mapper.Map<List<ConsultationTimeDto>>(g.ToList()));
         }
-        public async Task<List<ConsultationTimeDto>> GetConsultationTimesForNextThreeMonthsAsync(Guid employeeId)
+        public async Task<Dictionary<string, List<ConsultationTimeDto>>> GetConsultationTimesForNextThreeMonthsGroupedByWeekAsync(Guid employeeId)
         {
             var today = DateTime.Today;
             var threeMonthsLater = today.AddMonths(3);
@@ -87,7 +87,11 @@ namespace DrPetClinic.Bll.Services
                 .ThenBy(ct => ct.DayOfWeek)
                 .ToListAsync();
 
-            return _mapper.Map<List<ConsultationTimeDto>>(consultationTimes);
+            var groupedByWeek = consultationTimes
+                .GroupBy(ct => $"{ct.Year}-{ct.Month}-{ct.Week}")
+                .ToDictionary(g => g.Key, g => g.OrderBy(ct => ct.DayOfWeek).ToList());
+
+            return _mapper.Map<Dictionary<string, List<ConsultationTimeDto>>>(groupedByWeek);
         }
 
         public async Task<List<ConsultationTimeDto>> GetPagedConsultationTimesAsync(int page, int limit)

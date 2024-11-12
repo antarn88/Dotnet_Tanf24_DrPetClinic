@@ -4,15 +4,17 @@
     ViewData["Title"] = $"{Model.DoctorName} rendelései";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="mt-2">
+    <h1>@ViewData["Title"]</h1>
+</div>
 
-@if (!Model.ConsultationTimes.Any())
+@if (Model.ConsultationTimes == null || !Model.ConsultationTimes.Any())
 {
     <p>Nincs elérhető rendelés a következő három hónapra.</p>
 }
 else
 {
-    <table class="table table-striped mt-3">
+    <table class="table table-striped table-bordered mt-5">
         <thead>
             <tr>
                 <th>Év</th>
@@ -22,17 +24,44 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var consultation in Model.ConsultationTimes)
+            @foreach (var weekGroup in Model.ConsultationTimes)
             {
-                <tr>
-                    <td>@consultation.Year</td>
-                    <td>@Model.GetHungarianMonthName(consultation.Month)</td>
-                    <td>@consultation.Week</td>
-                    <td>
-                        @Model.GetHungarianDayOfWeek(consultation.DayOfWeek)
-                        @consultation.StartTime.ToString(@"hh\:mm") - @consultation.EndTime.ToString(@"hh\:mm")
-                    </td>
+                var parts = weekGroup.Key.Split('-');
+                if (parts.Length != 3)
+                {
+                    <tr>
+                        <td colspan="4">Érvénytelen hétcsoport kulcs: @weekGroup.Key</td>
+                    </tr>
+                    continue;
+                }
 
+                bool isYearParsed = int.TryParse(parts[0], out int year);
+                bool isMonthParsed = int.TryParse(parts[1], out int month);
+                bool isWeekParsed = int.TryParse(parts[2], out int week);
+
+                if (!isYearParsed || !isMonthParsed || !isWeekParsed)
+                {
+                    <tr>
+                        <td colspan="4">Érvénytelen adat a hétcsoport kulcsban: @weekGroup.Key</td>
+                    </tr>
+                    continue;
+                }
+
+                <tr>
+                    <td>@year</td>
+                    <td>@Model.GetHungarianMonthName(month)</td>
+                    <td>@week</td>
+                    <td>
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var consultation in weekGroup.Value.OrderBy(ct => ct.DayOfWeek))
+                            {
+                                <li>
+                                    <strong>@Model.GetHungarianDayOfWeek(consultation.DayOfWeek):</strong>
+                                    @consultation.StartTime.ToString(@"hh\:mm") - @consultation.EndTime.ToString(@"hh\:mm")
+                                </li>
+                            }
+                        </ul>
+                    </td>
                 </tr>
             }
         </tbody>

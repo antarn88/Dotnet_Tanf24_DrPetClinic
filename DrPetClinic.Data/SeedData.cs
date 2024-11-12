@@ -183,7 +183,6 @@ namespace DrPetClinic.Data
                     Description = "Pénteki rendelés.",
                     EmployeeId = DrKissId
                 },
-                // További rendelési idők minden doktorhoz, különböző napokra
                 new ConsultationTime
                 {
                     Id = Guid.NewGuid(),
@@ -196,6 +195,266 @@ namespace DrPetClinic.Data
                     IsAvailable = true,
                     Description = "Hétfői rendelés.",
                     EmployeeId = DrKissId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 47,
+                    DayOfWeek = DayOfWeek.Monday,
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(17, 0, 0),
+                    IsAvailable = true,
+                    Description = "Általános rendelési idő hétfőn.",
+                    EmployeeId = DrVakarcsId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 47,
+                    DayOfWeek = DayOfWeek.Tuesday,
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(16, 0, 0),
+                    IsAvailable = true,
+                    Description = "Általános rendelési idő kedden.",
+                    EmployeeId = DrVakarcsId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 48,
+                    DayOfWeek = DayOfWeek.Monday,
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(17, 0, 0),
+                    IsAvailable = true,
+                    Description = "Általános rendelési idő hétfőn.",
+                    EmployeeId = DrVakarcsId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 48,
+                    DayOfWeek = DayOfWeek.Tuesday,
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(16, 0, 0),
+                    IsAvailable = true,
+                    Description = "Általános rendelési idő kedden.",
+                    EmployeeId = DrVakarcsId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 48,
+                    DayOfWeek = DayOfWeek.Thursday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(14, 0, 0),
+                    IsAvailable = true,
+                    Description = "Csütörtöki rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 49,
+                    DayOfWeek = DayOfWeek.Thursday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(14, 0, 0),
+                    IsAvailable = true,
+                    Description = "Csütörtöki rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 12,
+                    Week = 50,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(15, 0, 0),
+                    IsAvailable = true,
+                    Description = "Szerdai rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 12,
+                    Week = 51,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(15, 0, 0),
+                    IsAvailable = true,
+                    Description = "Szerdai rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 47,
+                    DayOfWeek = DayOfWeek.Friday,
+                    StartTime = new TimeSpan(10, 0, 0),
+                    EndTime = new TimeSpan(18, 0, 0),
+                    IsAvailable = true,
+                    Description = "Pénteki rendelés.",
+                    EmployeeId = DrKissId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 48,
+                    DayOfWeek = DayOfWeek.Friday,
+                    StartTime = new TimeSpan(10, 0, 0),
+                    EndTime = new TimeSpan(18, 0, 0),
+                    IsAvailable = true,
+                    Description = "Pénteki rendelés.",
+                    EmployeeId = DrKissId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 12,
+                    Week = 52,
+                    DayOfWeek = DayOfWeek.Friday,
+                    StartTime = new TimeSpan(10, 0, 0),
+                    EndTime = new TimeSpan(18, 0, 0),
+                    IsAvailable = true,
+                    Description = "Pénteki rendelés.",
+                    EmployeeId = DrKissId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 12,
+                    Week = 53,
+                    DayOfWeek = DayOfWeek.Friday,
+                    StartTime = new TimeSpan(10, 0, 0),
+                    EndTime = new TimeSpan(18, 0, 0),
+                    IsAvailable = true,
+                    Description = "Pénteki rendelés.",
+                    EmployeeId = DrKissId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 12,
+                    Week = 52,
+                    DayOfWeek = DayOfWeek.Thursday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(14, 0, 0),
+                    IsAvailable = true,
+                    Description = "Csütörtöki rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 12,
+                    Week = 53,
+                    DayOfWeek = DayOfWeek.Thursday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(14, 0, 0),
+                    IsAvailable = true,
+                    Description = "Csütörtöki rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 46,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(14, 0, 0),
+                    IsAvailable = true,
+                    Description = "Szerdai rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 46,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    StartTime = new TimeSpan(10, 0, 0),
+                    EndTime = new TimeSpan(16, 0, 0),
+                    IsAvailable = true,
+                    Description = "Szerdai rendelés.",
+                    EmployeeId = DrKissId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 47,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    StartTime = new TimeSpan(8, 0, 0),
+                    EndTime = new TimeSpan(14, 0, 0),
+                    IsAvailable = true,
+                    Description = "Szerdai rendelés.",
+                    EmployeeId = DrSzaboId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 47,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    StartTime = new TimeSpan(10, 0, 0),
+                    EndTime = new TimeSpan(16, 0, 0),
+                    IsAvailable = true,
+                    Description = "Szerdai rendelés.",
+                    EmployeeId = DrKissId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 46,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(12, 0, 0),
+                    IsAvailable = true,
+                    Description = "Szerdai rövid rendelés.",
+                    EmployeeId = DrVakarcsId
+                },
+                new ConsultationTime
+                {
+                    Id = Guid.NewGuid(),
+                    Year = 2024,
+                    Month = 11,
+                    Week = 47,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    StartTime = new TimeSpan(9, 0, 0),
+                    EndTime = new TimeSpan(12, 0, 0),
+                    IsAvailable = true,
+                    Description = "Szerdai rövid rendelés.",
+                    EmployeeId = DrVakarcsId
                 }
             };
         }
