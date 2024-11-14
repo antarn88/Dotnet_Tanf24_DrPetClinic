@@ -3,6 +3,7 @@ using DrPetClinic.Bll.MappingProfiles;
 using DrPetClinic.Bll.Services;
 using DrPetClinic.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace DrPetClinic.Web
 {
@@ -33,6 +34,10 @@ namespace DrPetClinic.Web
             builder.Services.AddScoped<ITreatmentService, TreatmentService>();
 
             var app = builder.Build();
+
+            var cultureInfo = new System.Globalization.CultureInfo("hu-HU");
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
