@@ -30,6 +30,17 @@ namespace DrPetClinic.Bll.Services
             return _mapper.Map<List<AnimalDto>>(animals);
         }
 
+        // Állatok visszaadása
+        public async Task<List<AnimalDto>> GetAnimalsAsync()
+        {
+            var animals = await _context.Animals
+                .Include(a => a.Owners)
+                .Include(a => a.Treatments)
+                .ToListAsync();
+
+            return _mapper.Map<List<AnimalDto>>(animals);
+        }
+
         // Egy állat lekérdezése ID alapján az Owners és Treatments adatokkal
         public async Task<AnimalDto> GetAnimalByIdAsync(Guid id)
         {
