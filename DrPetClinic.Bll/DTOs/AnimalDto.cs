@@ -11,5 +11,6 @@
         public string? Description { get; set; }
         public List<OwnerDto> Owners { get; set; } = [];
         public List<TreatmentSummaryDto> Treatments { get; set; } = [];
+        public List<Guid> OwnerIds { get; set; } = [];
     }
 }

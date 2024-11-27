@@ -13,6 +13,7 @@ namespace DrPetClinic.Bll.MappingProfiles
 
             CreateMap<Employee, EmployeeSummaryDto>();
             CreateMap<CreateConsultationTimeDto, ConsultationTime>();
+            CreateMap<ConsultationTimeDto, CreateConsultationTimeDto>().ReverseMap();
         }
     }
 }

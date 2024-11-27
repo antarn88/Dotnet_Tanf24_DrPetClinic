@@ -75,13 +75,46 @@ namespace DrPetClinic.Bll.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateEmployeeWithConsultationTimesAsync(Guid id, EmployeeDetailsDto dto)
+        {
+            var employee = await _context.Employees
+                .Include(e => e.ConsultationTimes) // Rendelési idők betöltése
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (employee == null)
+                throw new KeyNotFoundException("Az alkalmazott nem található.");
+
+            // Frissítjük az alkalmazott adatait
+            _mapper.Map(dto, employee);
+
+            // Rendelési idők kezelése
+            employee.ConsultationTimes!.Clear();
+            foreach (var time in dto.ConsultationTimes)
+            {
+                employee.ConsultationTimes.Add(_mapper.Map<ConsultationTime>(time));
+            }
+
+            _context.Employees.Update(employee);
+            await _context.SaveChangesAsync();
+        }
+
+
         // Alkalmazott törlése
         public async Task DeleteEmployeeAsync(Guid id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null) throw new KeyNotFoundException("Az alkalmazott nem található.");
+            var employee = await _context.Employees
+                .Include(e => e.ConsultationTimes) // Betöltjük a kapcsolódó rendelési időket
+                .FirstOrDefaultAsync(e => e.Id == id);
 
+            if (employee == null)
+                throw new KeyNotFoundException("Az alkalmazott nem található.");
+
+            // Kapcsolódó rendelési idők törlése
+            _context.ConsultationTimes.RemoveRange(employee.ConsultationTimes!);
+
+            // Alkalmazott törlése
             _context.Employees.Remove(employee);
+
             await _context.SaveChangesAsync();
         }
     }

@@ -32,8 +32,36 @@
         <td>@animal.Name</td>
         <td>@animal.Species</td>
         <td>@animal.Status</td>
-        <td>TODO</td>
-        <td>TODO</td>
+        <td>
+          @if (animal.OwnerNames.Any())
+          {
+            <ul>
+              @foreach (var owner in animal.OwnerNames)
+              {
+                <li>@owner</li>
+              }
+            </ul>
+          }
+          else
+          {
+            <span>Nincs tulajdonos</span>
+          }
+        </td>
+        <td>
+          @if (animal.Treatments.Any())
+          {
+            <ul>
+              @foreach (var treatment in animal.Treatments)
+              {
+                <li>@treatment</li>
+              }
+            </ul>
+          }
+          else
+          {
+            <span>Nincsenek kezelések</span>
+          }
+        </td>
         <td class="text-center">
           <div class="btn-group" role="group">
             <a class="btn btn-sm btn-outline-primary" asp-page="/Assistant/Treatments/Create" asp-route-AnimalId="@animal.Id">Új
@@ -45,12 +73,6 @@
         </td>
       </tr>
     }
-
-    @if (Model.Animals == null || !Model.Animals.Any())
-    {
-      <tr>
-        <td colspan="3" class="text-center">Nincsenek megjeleníthető állatok</td>
-      </tr>
-    }
   </tbody>
+
 </table>

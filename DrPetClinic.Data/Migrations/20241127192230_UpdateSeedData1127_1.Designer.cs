@@ -4,6 +4,7 @@ using DrPetClinic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrPetClinic.Data.Migrations
 {
     [DbContext(typeof(DrPetClinicDBContext))]
-    partial class DrPetClinicDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241127192230_UpdateSeedData1127_1")]
+    partial class UpdateSeedData1127_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -39,13 +42,13 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            AnimalsId = new Guid("dfaaef8b-0acc-4e37-bf8d-6912d1c85ec0"),
-                            OwnersId = new Guid("15511172-14ae-4a10-890f-4f74eb20ea4d")
+                            AnimalsId = new Guid("37dea723-1f02-4c40-a36b-8a439564c375"),
+                            OwnersId = new Guid("4fb9aacd-1f0a-43bd-bb76-ee4133286742")
                         },
                         new
                         {
-                            AnimalsId = new Guid("916c6744-d279-4e22-82e2-8cc3dadf5046"),
-                            OwnersId = new Guid("f959abc7-c754-4c1a-b7cb-6f20a672e606")
+                            AnimalsId = new Guid("37dea723-1f02-4c40-a36b-8a439564c375"),
+                            OwnersId = new Guid("a0a26c8f-fe7d-420a-a7b6-f3172ae1c74a")
                         });
                 });
 
@@ -84,7 +87,7 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dfaaef8b-0acc-4e37-bf8d-6912d1c85ec0"),
+                            Id = new Guid("37dea723-1f02-4c40-a36b-8a439564c375"),
                             BirthDate = new DateTime(2020, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Ő a falu legszorgalmasabb terelője.",
                             Name = "Bodri",
@@ -94,7 +97,7 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("916c6744-d279-4e22-82e2-8cc3dadf5046"),
+                            Id = new Guid("690e557d-ae87-4bf7-b973-29447bcd1af3"),
                             BirthDate = new DateTime(2019, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A kajáért él-hal, de csak akkor enged közel, ha akar.",
                             Name = "Cirmi",
@@ -148,10 +151,10 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d4707553-c785-47e3-9e68-4a967f8d2c66"),
+                            Id = new Guid("496ca440-99b0-49f2-b415-f8d32a0eee64"),
                             DayOfWeek = 1,
                             Description = "Általános rendelési idő hétfőn.",
-                            EmployeeId = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
+                            EmployeeId = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
                             EndTime = new TimeSpan(0, 17, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -161,10 +164,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3e120f17-4dab-4153-bd60-9186b5aa568d"),
+                            Id = new Guid("f86ef2e0-176f-47df-af1f-3f1375b4ec9b"),
                             DayOfWeek = 2,
                             Description = "Általános rendelési idő kedden.",
-                            EmployeeId = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
+                            EmployeeId = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
                             EndTime = new TimeSpan(0, 16, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -174,10 +177,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("04a56552-c94c-42b6-b731-753d93c3b244"),
+                            Id = new Guid("528c98e6-2f07-4a93-92f9-05aa5037cbfb"),
                             DayOfWeek = 4,
                             Description = "Csütörtöki rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 14, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -187,10 +190,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ebe59e29-5b80-4205-bac3-73915e25022f"),
+                            Id = new Guid("59ec5b13-be21-4cfe-9fd6-4b96736b11b3"),
                             DayOfWeek = 3,
                             Description = "Szerdai rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 15, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)12,
@@ -200,10 +203,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("02403e78-a9ed-4bad-a5d4-4a8725826ee9"),
+                            Id = new Guid("9d8c487d-c31a-4ed7-ba77-116b4ca7aeb8"),
                             DayOfWeek = 5,
                             Description = "Pénteki rendelés.",
-                            EmployeeId = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
+                            EmployeeId = new Guid("a785cc35-a3d5-411f-b4df-d9406a7725e6"),
                             EndTime = new TimeSpan(0, 18, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)12,
@@ -213,10 +216,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9354fde8-1d10-4499-bc3e-16201720e39f"),
+                            Id = new Guid("e69fd438-8d86-455a-b2ca-54b8e153d2b9"),
                             DayOfWeek = 1,
                             Description = "Hétfői rendelés.",
-                            EmployeeId = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
+                            EmployeeId = new Guid("a785cc35-a3d5-411f-b4df-d9406a7725e6"),
                             EndTime = new TimeSpan(0, 16, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)12,
@@ -226,10 +229,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("11f2ac6c-a99c-4295-90c3-a6f48c533e71"),
+                            Id = new Guid("0d2be591-29cd-4611-b054-bfeefb82b0ec"),
                             DayOfWeek = 1,
                             Description = "Általános rendelési idő hétfőn.",
-                            EmployeeId = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
+                            EmployeeId = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
                             EndTime = new TimeSpan(0, 17, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -239,10 +242,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1c12d42c-af56-49a0-a1a0-56598cfd4caf"),
+                            Id = new Guid("f835629d-7258-43ca-9771-bd7ebd23e5a9"),
                             DayOfWeek = 2,
                             Description = "Általános rendelési idő kedden.",
-                            EmployeeId = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
+                            EmployeeId = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
                             EndTime = new TimeSpan(0, 16, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -252,10 +255,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e13334c9-1d08-431f-bbfc-93c8f0096fa9"),
+                            Id = new Guid("b3d1ba90-9124-4ffe-8f4a-2055e79304c9"),
                             DayOfWeek = 1,
                             Description = "Általános rendelési idő hétfőn.",
-                            EmployeeId = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
+                            EmployeeId = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
                             EndTime = new TimeSpan(0, 17, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -265,10 +268,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("eb076791-e842-4635-8b4d-cb9c7b3f8292"),
+                            Id = new Guid("127bfadb-87d4-4360-82af-5af3d2dc511c"),
                             DayOfWeek = 2,
                             Description = "Általános rendelési idő kedden.",
-                            EmployeeId = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
+                            EmployeeId = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
                             EndTime = new TimeSpan(0, 16, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -278,10 +281,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8769f6e4-de12-478e-b059-5e205f9d57b8"),
+                            Id = new Guid("f75a4f7a-80a0-43e9-b0a4-ed30aa7afaae"),
                             DayOfWeek = 4,
                             Description = "Csütörtöki rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 14, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -291,10 +294,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3435bd82-e8b8-42a9-95c8-100445c1e8ec"),
+                            Id = new Guid("4902840b-e734-4bb8-a204-679b2d627848"),
                             DayOfWeek = 4,
                             Description = "Csütörtöki rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 14, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -304,10 +307,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9338ffa4-df29-45ad-a3a7-35e03f3ab9da"),
+                            Id = new Guid("34b4e0a4-d688-459c-8226-3a363e1e933d"),
                             DayOfWeek = 3,
                             Description = "Szerdai rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 15, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)12,
@@ -317,10 +320,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8a2ccb9e-9928-4b75-8a6a-6c7b19b26c71"),
+                            Id = new Guid("b976b97a-c348-4f91-9562-2d56f760e8d8"),
                             DayOfWeek = 3,
                             Description = "Szerdai rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 15, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)12,
@@ -330,10 +333,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4b7bf13c-8581-4748-9142-5f101b55c3ba"),
+                            Id = new Guid("419d30b6-a794-417d-b0c4-cca602162248"),
                             DayOfWeek = 5,
                             Description = "Pénteki rendelés.",
-                            EmployeeId = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
+                            EmployeeId = new Guid("a785cc35-a3d5-411f-b4df-d9406a7725e6"),
                             EndTime = new TimeSpan(0, 18, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -343,10 +346,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d16c39e3-b327-4aaf-b3b0-224760cb68b3"),
+                            Id = new Guid("dd50b591-8919-4396-ba99-49e394454851"),
                             DayOfWeek = 5,
                             Description = "Pénteki rendelés.",
-                            EmployeeId = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
+                            EmployeeId = new Guid("a785cc35-a3d5-411f-b4df-d9406a7725e6"),
                             EndTime = new TimeSpan(0, 18, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -356,10 +359,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f8538c35-1790-4bc0-8250-ce7d01a586e3"),
+                            Id = new Guid("bc591e95-fdaa-4f92-8845-3aa192203cfa"),
                             DayOfWeek = 5,
                             Description = "Pénteki rendelés.",
-                            EmployeeId = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
+                            EmployeeId = new Guid("a785cc35-a3d5-411f-b4df-d9406a7725e6"),
                             EndTime = new TimeSpan(0, 18, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)12,
@@ -369,10 +372,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1c1e7a1c-d3df-447f-b5bb-b9a1c0b791a7"),
+                            Id = new Guid("8568eb19-bfa4-47a3-844a-3df4d60dcfbc"),
                             DayOfWeek = 5,
                             Description = "Pénteki rendelés.",
-                            EmployeeId = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
+                            EmployeeId = new Guid("a785cc35-a3d5-411f-b4df-d9406a7725e6"),
                             EndTime = new TimeSpan(0, 18, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)12,
@@ -382,10 +385,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ce32b021-8300-4787-87e7-716513010dbd"),
+                            Id = new Guid("d6f3f16f-b727-41ba-b317-b562de998be0"),
                             DayOfWeek = 4,
                             Description = "Csütörtöki rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 14, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)12,
@@ -395,10 +398,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("006e0fb6-9996-430c-88e3-3e38841d94e8"),
+                            Id = new Guid("91bfc85a-e17b-4849-9afa-e5f94283f939"),
                             DayOfWeek = 4,
                             Description = "Csütörtöki rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 14, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)12,
@@ -408,10 +411,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("569d37e3-d8e7-43f0-82c2-b2b75298d8c7"),
+                            Id = new Guid("ad7d84b8-9ced-426d-96d8-99803b7e0e20"),
                             DayOfWeek = 3,
                             Description = "Szerdai rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 14, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -421,10 +424,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fc2f1d23-62e8-4ad7-81b7-d14938fd3ace"),
+                            Id = new Guid("bff13021-49e5-431f-814f-33ea7f5ed330"),
                             DayOfWeek = 3,
                             Description = "Szerdai rendelés.",
-                            EmployeeId = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
+                            EmployeeId = new Guid("a785cc35-a3d5-411f-b4df-d9406a7725e6"),
                             EndTime = new TimeSpan(0, 16, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -434,10 +437,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cc3052c9-f2e1-40dc-8e8e-09776d37c0e8"),
+                            Id = new Guid("cee1a90a-a8c8-4035-a922-fad71d55a203"),
                             DayOfWeek = 3,
                             Description = "Szerdai rendelés.",
-                            EmployeeId = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            EmployeeId = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             EndTime = new TimeSpan(0, 14, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -447,10 +450,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dbae9501-ac05-42c1-a4bd-b874f9d18646"),
+                            Id = new Guid("161c0aea-c7f4-48fc-8bfc-68d81eec309c"),
                             DayOfWeek = 3,
                             Description = "Szerdai rendelés.",
-                            EmployeeId = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
+                            EmployeeId = new Guid("a785cc35-a3d5-411f-b4df-d9406a7725e6"),
                             EndTime = new TimeSpan(0, 16, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -460,10 +463,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fbd108b9-622b-4004-af24-916ec27d0689"),
+                            Id = new Guid("8adc2d38-ee4d-4846-8174-7dff97f1fd89"),
                             DayOfWeek = 3,
                             Description = "Szerdai rövid rendelés.",
-                            EmployeeId = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
+                            EmployeeId = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
                             EndTime = new TimeSpan(0, 12, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -473,10 +476,10 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2a96f49e-d691-4c0c-9382-7aa11041ee6e"),
+                            Id = new Guid("bd58c5aa-077c-49ee-a165-cb329ab37b79"),
                             DayOfWeek = 3,
                             Description = "Szerdai rövid rendelés.",
-                            EmployeeId = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
+                            EmployeeId = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
                             EndTime = new TimeSpan(0, 12, 0, 0, 0),
                             IsAvailable = true,
                             Month = (byte)11,
@@ -509,28 +512,28 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
+                            Id = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
                             Description = "Szakértő állatorvos.",
                             Name = "Dr. Vakarcs Pál",
                             Type = 1
                         },
                         new
                         {
-                            Id = new Guid("14fff1da-2f95-4823-8e6e-b7f51a33807a"),
+                            Id = new Guid("e6e59ce8-887c-4851-9b94-27db34f29ea8"),
                             Description = "Sebész specialista.",
                             Name = "Dr. Szabó Éva",
                             Type = 1
                         },
                         new
                         {
-                            Id = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
+                            Id = new Guid("a785cc35-a3d5-411f-b4df-d9406a7725e6"),
                             Description = "Egzotikus állatok szakértője.",
                             Name = "Dr. Kiss Tamás",
                             Type = 1
                         },
                         new
                         {
-                            Id = new Guid("4eb83681-05d8-4e94-a915-2c59ff8eb2fd"),
+                            Id = new Guid("e3087928-fdfc-40fd-847e-b3dc11667e87"),
                             Description = "A klinika segédje, minden munkában ott van.",
                             Name = "Hajdu Eszter",
                             Type = 2
@@ -572,11 +575,11 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("398522a6-0b7b-47e7-aaf7-c8f32bc19020"),
+                            Id = new Guid("cd953cfa-5133-40b7-8788-eaf0ff7dc85d"),
                             Description = "Alapvizsgálat",
                             Length = 30,
                             Medicine = "Védőoltás",
-                            TreatmentId = new Guid("4556aa1a-bc3f-4fdd-a1ba-e28a6072d214"),
+                            TreatmentId = new Guid("59972db8-6eaf-4851-9e76-c41c5faed427"),
                             Type = 1
                         });
                 });
@@ -608,7 +611,7 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("15511172-14ae-4a10-890f-4f74eb20ea4d"),
+                            Id = new Guid("4fb9aacd-1f0a-43bd-bb76-ee4133286742"),
                             BirthDate = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A falu híres állatorvosa.",
                             Name = "Kovács János",
@@ -616,7 +619,7 @@ namespace DrPetClinic.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f959abc7-c754-4c1a-b7cb-6f20a672e606"),
+                            Id = new Guid("a0a26c8f-fe7d-420a-a7b6-f3172ae1c74a"),
                             BirthDate = new DateTime(1992, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Kutyakozmetikus, minden kutyát széppé varázsol.",
                             Name = "Szabó Katalin",
@@ -662,23 +665,13 @@ namespace DrPetClinic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4556aa1a-bc3f-4fdd-a1ba-e28a6072d214"),
+                            Id = new Guid("59972db8-6eaf-4851-9e76-c41c5faed427"),
                             Amount = 15000m,
-                            AnimalId = new Guid("dfaaef8b-0acc-4e37-bf8d-6912d1c85ec0"),
+                            AnimalId = new Guid("37dea723-1f02-4c40-a36b-8a439564c375"),
                             Date = new DateTime(2023, 10, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Rutin vizsgálat",
-                            DoctorId = new Guid("c1b002c7-50f1-4622-8418-c2b94397ac06"),
-                            PersonId = new Guid("15511172-14ae-4a10-890f-4f74eb20ea4d")
-                        },
-                        new
-                        {
-                            Id = new Guid("32e46239-0009-4d81-9242-2382cbae6127"),
-                            Amount = 30000m,
-                            AnimalId = new Guid("916c6744-d279-4e22-82e2-8cc3dadf5046"),
-                            Date = new DateTime(2024, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Bolhaírtás",
-                            DoctorId = new Guid("8dcbcaf3-7ea7-410f-a7c3-fe3288ddf8e2"),
-                            PersonId = new Guid("f959abc7-c754-4c1a-b7cb-6f20a672e606")
+                            DoctorId = new Guid("c0235c2e-8caf-456a-ad3c-99b7d52ffba7"),
+                            PersonId = new Guid("4fb9aacd-1f0a-43bd-bb76-ee4133286742")
                         });
                 });
 

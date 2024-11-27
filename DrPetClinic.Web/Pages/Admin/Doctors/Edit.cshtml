@@ -1,6 +1,178 @@
 ﻿@page "/Admin/Doktorok/Edit/{DoktorId:guid}"
+@using DrPetClinic.Bll.Helpers
 @model DrPetClinic.Web.Pages.Admin.Doctors.EditModel
 @{
+  ViewData["Title"] = "Orvos szerkesztés";
 }
 
-<h1>Orvos szerkesztése</h1>
+<h1 class="text-center">Orvos szerkesztése</h1>
+
+<div class="container">
+  <form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Doctor.Id" />
+    <input type="hidden" asp-for="Doctor.Type" />
+
+
+    <!-- Név -->
+    <div class="row mb-3">
+      <div class="col-4">
+        <label asp-for="Doctor.Name">Név</label>
+        <input asp-for="Doctor.Name" class="form-control" />
+        <span asp-validation-for="Doctor.Name" class="text-danger"></span>
+      </div>
+    </div>
+
+    <!-- Leírás -->
+    <div class="row mb-3">
+      <div class="col-4">
+        <label asp-for="Doctor.Description">Leírás</label>
+        <input asp-for="Doctor.Description" class="form-control" />
+        <span asp-validation-for="Doctor.Description" class="text-danger"></span>
+      </div>
+    </div>
+
+    <!-- Rendelési idők -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <h4>Rendelési Idők</h4>
+        <table class="table table-striped table-bordered mt-5">
+          <thead>
+            <tr>
+              <th>Év</th>
+              <th>Hónap</th>
+              <th>Hét</th>
+              <th>Nap</th>
+              <th>Kezdés</th>
+              <th>Befejezés</th>
+              <th>Elérhető</th>
+              <th>Leírás</th>
+            </tr>
+          </thead>
+          <tbody id="consultation-times">
+            @if (!Model.Doctor.ConsultationTimes.Any())
+            {
+              <tr>
+                <td colspan="8" class="text-center">Nincsen megjeleníthető rendelési idő</td>
+              </tr>
+            }
+            else
+            {
+              @for (var i = 0; i < Model.Doctor.ConsultationTimes.Count; i++)
+              {
+                <tr>
+                  <td>
+                    <input asp-for="Doctor.ConsultationTimes[i].Year" class="form-control" />
+                    <span asp-validation-for="Doctor.ConsultationTimes[i].Year" class="text-danger"></span>
+                  </td>
+                  <td>
+                    <input asp-for="Doctor.ConsultationTimes[i].Month" class="form-control" />
+                    <span asp-validation-for="Doctor.ConsultationTimes[i].Month" class="text-danger"></span>
+                  </td>
+                  <td>
+                    <input asp-for="Doctor.ConsultationTimes[i].Week" class="form-control" />
+                    <span asp-validation-for="Doctor.ConsultationTimes[i].Week" class="text-danger"></span>
+                  </td>
+                  <td>
+                    <select asp-for="Doctor.ConsultationTimes[@i].DayOfWeek" class="form-control">
+                      @foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+                      {
+                        <option value="@day" selected="@(Model.Doctor.ConsultationTimes[@i].DayOfWeek == day ? "selected" : null)">
+                          @DateHelper.GetHungarianDayOfWeek(day)
+                        </option>
+                      }
+                    </select>
+                  </td>
+                  <td>
+                    <input asp-for="Doctor.ConsultationTimes[i].StartTime" type="time" class="form-control" />
+                    <span asp-validation-for="Doctor.ConsultationTimes[i].StartTime" class="text-danger"></span>
+                  </td>
+                  <td>
+                    <input asp-for="Doctor.ConsultationTimes[i].EndTime" type="time" class="form-control" />
+                    <span asp-validation-for="Doctor.ConsultationTimes[i].EndTime" class="text-danger"></span>
+                  </td>
+                  <td>
+                    <input type="hidden" id="hiddenIsAvailable_@i" name="Doctor.ConsultationTimes[@i].IsAvailable" value="true" />
+                    <input asp-for="Doctor.ConsultationTimes[@i].IsAvailable" type="checkbox" id="checkboxIsAvailable_@i"
+                      class="form-check-input" />
+
+                  </td>
+                  <td>
+                    <input asp-for="Doctor.ConsultationTimes[i].Description" class="form-control" />
+                    <span asp-validation-for="Doctor.ConsultationTimes[i].Description" class="text-danger"></span>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-success" onclick="addRow()">Új hozzáadása</button>
+      </div>
+    </div>
+
+
+    <!-- Mentés gomb -->
+    <div class="row mt-2">
+      <div class="col-4">
+        <a class="btn btn-outline-secondary" asp-page="/Admin/Doctors/Index">Vissza</a>
+        <button type="submit" class="btn btn-outline-primary">Mentés</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+@section Scripts {
+  <script>
+    function addRow() {
+      const tbody = document.getElementById("consultation-times");
+      const rowCount = tbody.querySelectorAll("tr").length;
+
+      const newRow = document.createElement("tr");
+
+      newRow.innerHTML = `
+                                  <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Year" class="form-control" /></td>
+                                  <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Month" class="form-control" /></td>
+                                  <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Week" class="form-control" /></td>
+                                  <td>
+                                      <select name="Doctor.ConsultationTimes[${rowCount}].DayOfWeek" class="form-control">
+                                          <option value="Monday">Hétfő</option>
+                                          <option value="Tuesday">Kedd</option>
+                                          <option value="Wednesday">Szerda</option>
+                                          <option value="Thursday">Csütörtök</option>
+                                          <option value="Friday">Péntek</option>
+                                          <option value="Saturday">Szombat</option>
+                                          <option value="Sunday">Vasárnap</option>
+                                      </select>
+                                  </td>
+                                  <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].StartTime" class="form-control" /></td>
+                                  <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].EndTime" class="form-control" /></td>
+                                  <td>
+                                    <input type="hidden" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" value="false" />
+                                    <input type="checkbox" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" class="form-check-input" />
+                                  </td>
+                                  <td><input type="text" name="Doctor.ConsultationTimes[${rowCount}].Description" class="form-control" /></td>
+                              `;
+
+      tbody.appendChild(newRow);
+    }
+
+    function removeRow(button) {
+      const row = button.closest("tr");
+      row.remove();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+          const hiddenInput = document.querySelector(`#hiddenIsAvailable_${this.id.split('_')[1]}`);
+          hiddenInput.value = this.checked; // Szinkronizáljuk a hidden mező értékét
+          console.log("hiddenInput:", hiddenInput);
+        });
+      });
+    });
+
+
+  </script>
+
+}

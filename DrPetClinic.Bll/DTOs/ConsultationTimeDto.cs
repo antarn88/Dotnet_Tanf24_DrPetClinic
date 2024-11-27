@@ -12,6 +12,6 @@
         public bool IsAvailable { get; set; }
         public string? Description { get; set; }
         public Guid EmployeeId { get; set; }
-        public EmployeeSummaryDto Employee { get; set; }
+        public EmployeeSummaryDto? Employee { get; set; }
     }
 }

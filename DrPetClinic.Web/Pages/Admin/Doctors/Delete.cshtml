@@ -1,6 +1,26 @@
-﻿@page "/Admin/Doktorok/Delete/{DoktorId:guid}"
+﻿@page "/Admin/Doctors/Delete/{DoktorId:guid}"
 @model DrPetClinic.Web.Pages.Admin.Doctors.DeleteModel
 @{
+  ViewData["Title"] = "Orvos törlése";
 }
 
 <h1>Orvos törlése</h1>
+
+@if (Model.Doctor == null)
+{
+  <p class="text-danger">Az orvos nem található.</p>
+}
+else
+{
+  <p>Biztosan törölni szeretnéd az alábbi orvost és az összes rendelési idejét?</p>
+  <ul>
+    <li><strong>Név:</strong> @Model.Doctor.Name</li>
+    <li><strong>Leírás:</strong> @Model.Doctor.Description</li>
+  </ul>
+
+  <form method="post">
+    <input type="hidden" asp-for="Doctor.Id" />
+    <a class="btn btn-secondary" asp-page="/Admin/Doctors/Index">Mégse</a>
+    <button type="submit" class="btn btn-danger">Törlés</button>
+  </form>
+}

@@ -116,6 +116,17 @@ namespace DrPetClinic.Bll.Services
             return _mapper.Map<ConsultationTimeDto>(consultationTime);
         }
 
+        public async Task<List<ConsultationTimeDto>> GetConsultationTimesByDoctorIdAsync(Guid doctorId)
+        {
+            var consultationTimes = await _context.ConsultationTimes
+                .Where(ct => ct.EmployeeId == doctorId)
+                .OrderBy(ct => ct.Week)
+                .ThenBy(ct => ct.DayOfWeek)
+                .ToListAsync();
+
+            return _mapper.Map<List<ConsultationTimeDto>>(consultationTimes);
+        }
+
         public async Task<ConsultationTimeDto> CreateConsultationTimeAsync(CreateConsultationTimeDto dto)
         {
             var consultationTime = _mapper.Map<ConsultationTime>(dto);
@@ -134,6 +145,42 @@ namespace DrPetClinic.Bll.Services
             _context.ConsultationTimes.Update(consultationTime);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateConsultationTimesAsync(Guid doctorId, List<CreateConsultationTimeDto> consultationTimes)
+        {
+            var existingConsultationTimes = await _context.ConsultationTimes
+                .Where(ct => ct.EmployeeId == doctorId)
+                .ToListAsync();
+
+            foreach (var dto in consultationTimes)
+            {
+                var consultationTime = existingConsultationTimes.FirstOrDefault(ct => ct.Id == dto.Id);
+
+                if (consultationTime != null)
+                {
+                    // Meglévő rendelési idő frissítése
+                    _mapper.Map(dto, consultationTime);
+                }
+                else
+                {
+                    // Új rendelési idő hozzáadása
+                    var newConsultationTime = _mapper.Map<ConsultationTime>(dto);
+                    newConsultationTime.EmployeeId = doctorId;
+                    _context.ConsultationTimes.Add(newConsultationTime);
+                }
+            }
+
+            // Nem létező rendelési idők törlése
+            var idsToKeep = consultationTimes.Select(ct => ct.Id).ToHashSet();
+            var timesToRemove = existingConsultationTimes
+                .Where(ct => !idsToKeep.Contains(ct.Id))
+                .ToList();
+
+            _context.ConsultationTimes.RemoveRange(timesToRemove);
+
+            await _context.SaveChangesAsync();
+        }
+
 
         public async Task DeleteConsultationTimeAsync(Guid id)
         {

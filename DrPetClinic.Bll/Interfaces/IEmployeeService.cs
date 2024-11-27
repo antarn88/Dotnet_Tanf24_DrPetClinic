@@ -9,6 +9,7 @@ namespace DrPetClinic.Bll.Services
         Task<EmployeeDetailsDto> GetEmployeeByIdAsync(Guid id);
         Task<EmployeeDetailsDto> CreateEmployeeAsync(CreateEmployeeDto dto);
         Task UpdateEmployeeAsync(Guid id, CreateEmployeeDto dto);
+        Task UpdateEmployeeWithConsultationTimesAsync(Guid id, EmployeeDetailsDto dto);
         Task DeleteEmployeeAsync(Guid id);
     }
 }

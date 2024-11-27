@@ -8,7 +8,7 @@ namespace DrPetClinic.Web.Pages.Assistant.Animals
     {
         private readonly IAnimalService AnimalService;
 
-        public List<AnimalDto> Animals { get; set; }
+        public List<AnimalDetailsDto> Animals { get; set; }
 
         public IndexModel(IAnimalService animalService)
         {
@@ -17,7 +17,7 @@ namespace DrPetClinic.Web.Pages.Assistant.Animals
 
         public async Task OnGetAsync()
         {
-            Animals = await AnimalService.GetAnimalsAsync();
+            Animals = await AnimalService.GetAnimalsWithDetailsAsync();
         }
     }
 }

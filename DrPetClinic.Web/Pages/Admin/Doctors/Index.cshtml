@@ -45,3 +45,13 @@
     }
   </tbody>
 </table>
+
+@section Scripts {
+  <script>
+    function confirmDelete(deleteUrl) {
+      if (confirm("Biztosan törölni szeretnéd az orvost és az összes rendelési idejét?")) {
+        window.location.href = deleteUrl;
+      }
+    }
+  </script>
+}

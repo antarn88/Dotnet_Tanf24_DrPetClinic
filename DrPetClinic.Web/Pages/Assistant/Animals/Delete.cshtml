@@ -1,6 +1,26 @@
 ﻿@page "/Asszisztens/Allatok/Delete/{AnimalId:guid}"
 @model DrPetClinic.Web.Pages.Assistant.Animals.DeleteModel
 @{
+  ViewData["Title"] = "Állat törlése";
 }
 
 <h1>Állat törlése</h1>
+
+@if (Model.Animal != null)
+{
+  <p>Biztosan törölni szeretné az alábbi állatot?</p>
+  <ul>
+    <li><strong>Név:</strong> @Model.Animal.Name</li>
+    <li><strong>Fajta:</strong> @Model.Animal.Species</li>
+    <li><strong>Státusz:</strong> @Model.Animal.Status</li>
+  </ul>
+
+  <form method="post">
+    <button type="submit" class="btn btn-danger">Törlés</button>
+    <a asp-page="/Assistant/Animals/Index" class="btn btn-secondary">Mégse</a>
+  </form>
+}
+else
+{
+  <p class="text-danger">Az állat nem található vagy már törölve lett.</p>
+}

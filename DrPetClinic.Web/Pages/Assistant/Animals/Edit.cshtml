@@ -1,7 +1,53 @@
 ﻿@page "/Asszisztens/Allatok/Edit/{AnimalId:guid}"
 @model DrPetClinic.Web.Pages.Assistant.Animals.EditModel
 @{
+  ViewData["Title"] = "Állat szerkesztése";
 }
 
-
 <h1>Állat szerkesztése</h1>
+
+<form method="post">
+  <input type="hidden" asp-for="Animal.Id" />
+
+  @foreach (var owner in @Model.Animal.Owners)
+  {
+    <input type="hidden" name="Animal.OwnerIds" value="@owner.Id" />
+  }
+
+  <div class="mb-3">
+    <label asp-for="Animal.Name" class="form-label">Állat neve</label>
+    <input asp-for="Animal.Name" class="form-control" />
+    <span asp-validation-for="Animal.Name" class="text-danger"></span>
+  </div>
+  <div class="mb-3">
+    <label asp-for="Animal.Species" class="form-label">Fajtája</label>
+    <input asp-for="Animal.Species" class="form-control" />
+    <span asp-validation-for="Animal.Species" class="text-danger"></span>
+  </div>
+  <div class="mb-3">
+    <label asp-for="Animal.Type" class="form-label">Típusa</label>
+    <input asp-for="Animal.Type" class="form-control" />
+    <span asp-validation-for="Animal.Type" class="text-danger"></span>
+  </div>
+  <div class="mb-3">
+    <label asp-for="Animal.BirthDate" class="form-label">Születési dátum</label>
+    <input asp-for="Animal.BirthDate" type="date" class="form-control" />
+    <span asp-validation-for="Animal.BirthDate" class="text-danger"></span>
+  </div>
+  <div class="mb-3">
+    <label asp-for="Animal.Status" class="form-label">Státusz</label>
+    <input asp-for="Animal.Status" class="form-control" />
+    <span asp-validation-for="Animal.Status" class="text-danger"></span>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Tulajdonos</label>
+    <input type="text" value="@Model.OwnerName" class="form-control" disabled />
+  </div>
+  <div class="mb-3">
+    <label asp-for="Animal.Description" class="form-label">Leírás</label>
+    <textarea asp-for="Animal.Description" class="form-control"></textarea>
+    <span asp-validation-for="Animal.Description" class="text-danger"></span>
+  </div>
+  <button type="submit" class="btn btn-primary">Mentés</button>
+  <a asp-page="/Assistant/Animals/Index" class="btn btn-secondary">Vissza</a>
+</form>

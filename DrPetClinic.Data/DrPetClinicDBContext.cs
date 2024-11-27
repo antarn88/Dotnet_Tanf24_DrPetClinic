@@ -25,6 +25,8 @@ namespace DrPetClinic.Data
             modelBuilder.Entity<Treatment>().HasData(SeedData.GetTreatments());
             modelBuilder.Entity<Entry>().HasData(SeedData.GetEntries());
             modelBuilder.Entity<ConsultationTime>().HasData(SeedData.GetConsultationTimes());
+            modelBuilder.Entity("AnimalPerson").HasData(SeedData.GetAnimalOwners());
         }
+
     }
 }

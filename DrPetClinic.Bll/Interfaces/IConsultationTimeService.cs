@@ -11,8 +11,10 @@ namespace DrPetClinic.Bll.Interfaces
         Task<Dictionary<string, List<ConsultationTimeDto>>> GetGroupedConsultationTimesByYearAndMonthAsync(int year, int month);
         Task<Dictionary<string, List<ConsultationTimeDto>>> GetConsultationTimesForNextThreeMonthsGroupedByWeekAsync(Guid employeeId);
         Task<Dictionary<string, List<ConsultationTimeDto>>> GetCurrentWeekGroupedConsultationTimesAsync();
+        Task<List<ConsultationTimeDto>> GetConsultationTimesByDoctorIdAsync(Guid doctorId);
         Task<ConsultationTimeDto> CreateConsultationTimeAsync(CreateConsultationTimeDto dto);
         Task UpdateConsultationTimeAsync(Guid id, CreateConsultationTimeDto dto);
+        Task UpdateConsultationTimesAsync(Guid doctorId, List<CreateConsultationTimeDto> consultationTimes);
         Task DeleteConsultationTimeAsync(Guid id);
     }
 }

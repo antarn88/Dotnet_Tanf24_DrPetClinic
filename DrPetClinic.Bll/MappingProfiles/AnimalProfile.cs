@@ -15,6 +15,7 @@ namespace DrPetClinic.Bll.MappingProfiles
             CreateMap<CreateAnimalDto, Animal>();
             CreateMap<Person, OwnerDto>();
             CreateMap<Treatment, TreatmentSummaryDto>();
+            CreateMap<AnimalDto, Animal>();
         }
     }
 }

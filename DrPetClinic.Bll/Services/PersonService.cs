@@ -41,6 +41,12 @@ namespace DrPetClinic.Bll.Services
             return _mapper.Map<PersonDetailsDto>(person);
         }
 
+        public async Task<List<PersonSummaryDto>> GetAllOwnersAsync()
+        {
+            var owners = await _context.People.ToListAsync();
+            return _mapper.Map<List<PersonSummaryDto>>(owners);
+        }
+
         // Új személy létrehozása
         public async Task<PersonDetailsDto> CreatePersonAsync(CreatePersonDto dto)
         {

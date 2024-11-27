@@ -9,9 +9,12 @@ namespace DrPetClinic.Data
         private static readonly Guid DrSzaboId = Guid.NewGuid();
         private static readonly Guid DrKissId = Guid.NewGuid();
         private static readonly Guid HajduEszterId = Guid.NewGuid();
-        private static readonly Guid BodriId = Guid.NewGuid();
-        private static readonly Guid KovacsJanosId = Guid.NewGuid();
+        public static readonly Guid BodriId = Guid.NewGuid();
+        public static readonly Guid CirmiId = Guid.NewGuid();
+        public static readonly Guid KovacsJanosId = Guid.NewGuid();
         private static readonly Guid TreatmentId = Guid.NewGuid();
+
+        public static readonly Guid SzaboKatalinId = Guid.NewGuid();
 
         public static List<Animal> GetAnimals()
         {
@@ -31,7 +34,7 @@ namespace DrPetClinic.Data
                 },
                 new Animal
                 {
-                    Id = Guid.NewGuid(),
+                    Id = CirmiId,
                     Species = "Macska",
                     Type = "Sziámi",
                     BirthDate = new DateTime(2019, 6, 21),
@@ -55,19 +58,24 @@ namespace DrPetClinic.Data
                     BirthDate = new DateTime(1985, 5, 15),
                     Residence = "Budapest",
                     Description = "A falu híres állatorvosa.",
-                    Animals = new List<Animal>(),
-                    Treatments = new List<Treatment>()
                 },
                 new Person
                 {
-                    Id = Guid.NewGuid(),
+                    Id = SzaboKatalinId,
                     Name = "Szabó Katalin",
                     BirthDate = new DateTime(1992, 9, 30),
                     Residence = "Debrecen",
                     Description = "Kutyakozmetikus, minden kutyát széppé varázsol.",
-                    Animals = new List<Animal>(),
-                    Treatments = new List<Treatment>()
                 }
+            };
+        }
+
+        public static List<dynamic> GetAnimalOwners()
+        {
+            return new List<dynamic>
+            {
+                new { AnimalsId = BodriId, OwnersId = KovacsJanosId },
+                new { AnimalsId = CirmiId, OwnersId = SzaboKatalinId },
             };
         }
 
@@ -472,6 +480,17 @@ namespace DrPetClinic.Data
                     DoctorId = DrVakarcsId,
                     AnimalId = BodriId,
                     PersonId = KovacsJanosId,
+                    Entries = new List<Entry>()
+                },
+                new Treatment
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Bolhaírtás",
+                    Amount = 30000,
+                    Date = new DateTime(2024, 12, 4),
+                    DoctorId = DrKissId,
+                    AnimalId = CirmiId,
+                    PersonId = SzaboKatalinId,
                     Entries = new List<Entry>()
                 }
             };
