@@ -1,6 +1,5 @@
 using AutoMapper;
 using DrPetClinic.Bll.DTOs;
-using DrPetClinic.Bll.Helpers;
 using DrPetClinic.Bll.Interfaces;
 using DrPetClinic.Bll.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +15,6 @@ namespace DrPetClinic.Web.Pages.Admin.Doctors
 
         [BindProperty]
         public EmployeeDetailsDto Doctor { get; set; }
-
-
 
         public EditModel(IEmployeeService employeeService, IConsultationTimeService consultationTimeService, IMapper mapper)
         {
@@ -39,17 +36,9 @@ namespace DrPetClinic.Web.Pages.Admin.Doctors
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // if (!ModelState.IsValid)
-            // {
-            //     return Page();
-            // }
-
-            foreach (var consultation in Doctor.ConsultationTimes)
+            if (!ModelState.IsValid)
             {
-                System.Console.WriteLine(consultation.IsAvailable);
-                // Kényszerített alapértelmezett értékek
-                // consultation.IsAvailable = consultation.IsAvailable || false;
-                // consultation.DayOfWeek = Enum.TryParse<DayOfWeek>(consultation.DayOfWeek.ToString(), out var day) ? day : DayOfWeek.Monday;
+                return Page();
             }
 
             var createConsultationTimeDtos = Doctor.ConsultationTimes
@@ -67,7 +56,6 @@ namespace DrPetClinic.Web.Pages.Admin.Doctors
                     EmployeeId = Doctor.Id
                 })
                 .ToList();
-
 
 
             await _consultationTimeService.UpdateConsultationTimesAsync(Doctor.Id, createConsultationTimeDtos);

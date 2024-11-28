@@ -61,6 +61,7 @@
             {
               @for (var i = 0; i < Model.Doctor.ConsultationTimes.Count; i++)
               {
+                <input type="hidden" asp-for="Doctor.ConsultationTimes[i].Id" />
                 <tr>
                   <td>
                     <input asp-for="Doctor.ConsultationTimes[i].Year" class="form-control" />
@@ -93,10 +94,7 @@
                     <span asp-validation-for="Doctor.ConsultationTimes[i].EndTime" class="text-danger"></span>
                   </td>
                   <td>
-                    <input type="hidden" id="hiddenIsAvailable_@i" name="Doctor.ConsultationTimes[@i].IsAvailable" value="true" />
-                    <input asp-for="Doctor.ConsultationTimes[@i].IsAvailable" type="checkbox" id="checkboxIsAvailable_@i"
-                      class="form-check-input" />
-
+                    <input asp-for="Doctor.ConsultationTimes[i].IsAvailable" type="checkbox" class="form-check-input" />
                   </td>
                   <td>
                     <input asp-for="Doctor.ConsultationTimes[i].Description" class="form-control" />
@@ -131,28 +129,28 @@
       const newRow = document.createElement("tr");
 
       newRow.innerHTML = `
-                                  <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Year" class="form-control" /></td>
-                                  <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Month" class="form-control" /></td>
-                                  <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Week" class="form-control" /></td>
-                                  <td>
-                                      <select name="Doctor.ConsultationTimes[${rowCount}].DayOfWeek" class="form-control">
-                                          <option value="Monday">Hétfő</option>
-                                          <option value="Tuesday">Kedd</option>
-                                          <option value="Wednesday">Szerda</option>
-                                          <option value="Thursday">Csütörtök</option>
-                                          <option value="Friday">Péntek</option>
-                                          <option value="Saturday">Szombat</option>
-                                          <option value="Sunday">Vasárnap</option>
-                                      </select>
-                                  </td>
-                                  <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].StartTime" class="form-control" /></td>
-                                  <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].EndTime" class="form-control" /></td>
-                                  <td>
-                                    <input type="hidden" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" value="false" />
-                                    <input type="checkbox" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" class="form-check-input" />
-                                  </td>
-                                  <td><input type="text" name="Doctor.ConsultationTimes[${rowCount}].Description" class="form-control" /></td>
-                              `;
+            <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Year" class="form-control" /></td>
+            <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Month" class="form-control" /></td>
+            <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Week" class="form-control" /></td>
+            <td>
+                <select name="Doctor.ConsultationTimes[${rowCount}].DayOfWeek" class="form-control">
+                    <option value="Monday">Hétfő</option>
+                    <option value="Tuesday">Kedd</option>
+                    <option value="Wednesday">Szerda</option>
+                    <option value="Thursday">Csütörtök</option>
+                    <option value="Friday">Péntek</option>
+                    <option value="Saturday">Szombat</option>
+                    <option value="Sunday">Vasárnap</option>
+                </select>
+            </td>
+            <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].StartTime" class="form-control" /></td>
+            <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].EndTime" class="form-control" /></td>
+            <td>
+              <input type="hidden" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" value="false" />
+              <input type="checkbox" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" class="form-check-input" />
+            </td>
+            <td><input type="text" name="Doctor.ConsultationTimes[${rowCount}].Description" class="form-control" /></td>
+        `;
 
       tbody.appendChild(newRow);
     }
@@ -161,17 +159,6 @@
       const row = button.closest("tr");
       row.remove();
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
-        checkbox.addEventListener("change", function () {
-          const hiddenInput = document.querySelector(`#hiddenIsAvailable_${this.id.split('_')[1]}`);
-          hiddenInput.value = this.checked; // Szinkronizáljuk a hidden mező értékét
-          console.log("hiddenInput:", hiddenInput);
-        });
-      });
-    });
-
 
   </script>
 
