@@ -1,12 +1,12 @@
 ﻿using DrPetClinic.Data.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DrPetClinic.Data.Entities
 {
-    public class Employee : IEntityTypeConfiguration<Employee>
+    public class Employee : IdentityUser<Guid>, IEntityTypeConfiguration<Employee>
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
         public EmployeeType Type { get; set; }
@@ -16,6 +16,7 @@ namespace DrPetClinic.Data.Entities
 
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
+            builder.ToTable("Employees");
             builder.HasKey(x => x.Id);
         }
     }

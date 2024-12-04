@@ -1,10 +1,12 @@
 ﻿using DrPetClinic.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace DrPetClinic.Data
 {
-    public class DrPetClinicDBContext : DbContext
+    public class DrPetClinicDBContext : IdentityDbContext<Employee, IdentityRole<Guid>, Guid>
     {
         public DrPetClinicDBContext(DbContextOptions<DrPetClinicDBContext> options) : base(options) { }
 
@@ -17,6 +19,9 @@ namespace DrPetClinic.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Az Identity miatt
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             modelBuilder.Entity<Employee>().HasData(SeedData.GetEmployees());
