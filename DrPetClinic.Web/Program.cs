@@ -2,7 +2,10 @@ using DrPetClinic.Bll.Interfaces;
 using DrPetClinic.Bll.MappingProfiles;
 using DrPetClinic.Bll.Services;
 using DrPetClinic.Data;
+using DrPetClinic.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Globalization;
 
 namespace DrPetClinic.Web
@@ -15,7 +18,37 @@ namespace DrPetClinic.Web
 
             // Add services to the container.
             builder.Services.AddRazorPages();
-            builder.Services.AddDbContext<DrPetClinicDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DrPetClinicDB")));
+            builder.Services.AddDbContext<DrPetClinicDBContext>(options =>
+            {
+                options.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)); // Enélkül exception-t kaptam migrációkor!
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DrPetClinicDB"));
+            });
+
+            // Identity
+            builder.Services
+              .AddIdentity<Employee, IdentityRole<Guid>>()
+              .AddEntityFrameworkStores<DrPetClinicDBContext>()
+              .AddDefaultTokenProviders();
+
+            // Identity szabályok
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.User.RequireUniqueEmail = false;
+                options.SignIn.RequireConfirmedAccount = false;
+            });
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
 
             // Automapperek
             builder.Services.AddAutoMapper(typeof(ConsultationTimeProfile));
@@ -48,10 +81,11 @@ namespace DrPetClinic.Web
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.MapStaticAssets(); // .NET 9 igényli az app.UseStaticFiles() helyett
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages();
