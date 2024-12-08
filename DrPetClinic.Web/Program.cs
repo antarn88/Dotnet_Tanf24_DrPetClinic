@@ -3,7 +3,10 @@ using DrPetClinic.Bll.MappingProfiles;
 using DrPetClinic.Bll.Services;
 using DrPetClinic.Data;
 using DrPetClinic.Data.Entities;
+using DrPetClinic.Web.Services;
+using DrPetClinic.Web.Settings;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Globalization;
@@ -49,6 +52,10 @@ namespace DrPetClinic.Web
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+
+            // MailSettings
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             // Automapperek
             builder.Services.AddAutoMapper(typeof(ConsultationTimeProfile));
