@@ -6,6 +6,7 @@ namespace DrPetClinic.Bll.Services
     {
         Task<List<EmployeeDetailsDto>> GetPagedEmployeesAsync(int page, int limit);
         Task<List<EmployeeDto>> GetDoctorsAsync();
+        Task<List<string>> GetEmployeeTypesAsync();
         Task<EmployeeDetailsDto> GetEmployeeByIdAsync(Guid id);
         Task<EmployeeDetailsDto> CreateEmployeeAsync(CreateEmployeeDto dto);
         Task UpdateEmployeeAsync(Guid id, CreateEmployeeDto dto);

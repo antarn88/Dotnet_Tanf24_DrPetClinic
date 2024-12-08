@@ -1,9 +1,12 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel;
+using System.Reflection;
+using AutoMapper;
 using DrPetClinic.Bll.DTOs;
 using DrPetClinic.Data;
 using DrPetClinic.Data.Entities;
 using DrPetClinic.Data.Enums;
 using Microsoft.EntityFrameworkCore;
+using DrPetClinic.Bll.Helpers;
 
 namespace DrPetClinic.Bll.Services
 {
@@ -29,6 +32,17 @@ namespace DrPetClinic.Bll.Services
                 .ToListAsync();
 
             return _mapper.Map<List<EmployeeDetailsDto>>(employees);
+        }
+
+        // Alkalmazott típusok lekérdezése
+        public async Task<List<string>> GetEmployeeTypesAsync()
+        {
+            var descriptions = Enum.GetValues(typeof(EmployeeType))
+                .Cast<EmployeeType>()
+                .Select(e => Utils.GetEnumDescription(e))
+                .ToList();
+
+            return await Task.FromResult(descriptions);
         }
 
         public async Task<List<EmployeeDto>> GetDoctorsAsync()

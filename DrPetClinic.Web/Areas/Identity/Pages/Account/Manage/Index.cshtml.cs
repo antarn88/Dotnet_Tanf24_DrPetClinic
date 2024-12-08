@@ -3,10 +3,13 @@
 #nullable disable
 
 using DrPetClinic.Data.Entities;
+using DrPetClinic.Bll.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using DrPetClinic.Data.Enums;
+
 
 namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -23,51 +26,47 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string Username { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+        public EmployeeType EmployeeType { get; set; }
+
+
+
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Required]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
+            [Display(Name = "Description")]
+            public string Description { get; set; }
+
+            // [Required]
+            [Display(Name = "Type")]
+            public string Type { get; set; }
         }
 
         private async Task LoadAsync(Employee user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var userCustomData = await _userManager.GetUserAsync(User);
 
             Username = userName;
+            EmployeeType = userCustomData.Type;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                Name = userCustomData.Name,
+                Description = userCustomData.Description,
+                Type = userCustomData.Type.ToString()
             };
         }
 
@@ -97,13 +96,25 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            var userCustomData = await _userManager.GetUserAsync(User);
+            if (Input.Name != userCustomData.Name)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                user.Name = Input.Name;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Unexpected error when trying to set users custom data.";
+                    return RedirectToPage();
+                }
+            }
+
+            if (Input.Description != userCustomData.Description)
+            {
+                user.Description = Input.Description;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set users custom data.";
                     return RedirectToPage();
                 }
             }
@@ -112,5 +123,7 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
+
+        public string TypeDescription => Utils.GetEnumDescription(EmployeeType);
     }
 }

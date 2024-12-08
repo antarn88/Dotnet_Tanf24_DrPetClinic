@@ -10,7 +10,10 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using DrPetClinic.Bll.Services;
 using DrPetClinic.Data.Entities;
+using DrPetClinic.Data.Enums;
+using DrPetClinic.Bll.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -30,13 +33,16 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<Employee> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IEmployeeService _employeeService;
 
         public RegisterModel(
             UserManager<Employee> userManager,
             IUserStore<Employee> userStore,
             SignInManager<Employee> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IEmployeeService employeeService
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +50,7 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _employeeService = employeeService;
         }
 
         /// <summary>
@@ -65,12 +72,26 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
         /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+
+        public List<string> EmployeeTypes { get; set; }
+
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public class InputModel
         {
+            [Required]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
+            [Display(Name = "Description")]
+            public string Description { get; set; }
+
+            [Display(Name = "Type")]
+            public EmployeeType Type { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -105,7 +126,10 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            EmployeeTypes = await _employeeService.GetEmployeeTypesAsync();
         }
+
+        public EmployeeType GetEmployeeType(string description) => Utils.GetEmployeeTypeFromEmployeeTypeDescription(description);
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -114,6 +138,11 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                // Plusz property beállítások
+                user.Name = Input.Name;
+                user.Description = Input.Description;
+                user.Type = Input.Type;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
