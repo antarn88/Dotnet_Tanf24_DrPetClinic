@@ -73,6 +73,13 @@ namespace DrPetClinic.Web
             builder.Services.AddScoped<IPersonService, PersonService>();
             builder.Services.AddScoped<ITreatmentService, TreatmentService>();
 
+            // Google belépéshez
+            builder.Services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration.GetSection("Authentication:Google:ClientId").Value!;
+                options.ClientSecret = builder.Configuration.GetSection("Authentication:Google:ClientSecret").Value!;
+            });
+
             var app = builder.Build();
 
             var cultureInfo = new System.Globalization.CultureInfo("hu-HU");

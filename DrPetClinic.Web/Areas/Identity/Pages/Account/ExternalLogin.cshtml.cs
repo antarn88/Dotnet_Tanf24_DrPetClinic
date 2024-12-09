@@ -2,7 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using DrPetClinic.Bll.Helpers;
+using DrPetClinic.Bll.Services;
 using DrPetClinic.Data.Entities;
+using DrPetClinic.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -24,6 +27,7 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
         private readonly IUserStore<Employee> _userStore;
         private readonly IUserEmailStore<Employee> _emailStore;
         private readonly IEmailSender _emailSender;
+        private readonly IEmployeeService _employeeService;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
@@ -31,7 +35,9 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
             UserManager<Employee> userManager,
             IUserStore<Employee> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IEmployeeService employeeService
+            )
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -39,7 +45,10 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            _employeeService = employeeService;
         }
+
+        public List<string> EmployeeTypes { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -80,7 +89,19 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Required]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
+            [Display(Name = "Description")]
+            public string Description { get; set; }
+
+            [Display(Name = "Type")]
+            public EmployeeType Type { get; set; }
         }
+
+        public EmployeeType GetEmployeeType(string description) => Utils.GetEmployeeTypeFromEmployeeTypeDescription(description);
 
         public IActionResult OnGet() => RedirectToPage("./Login");
 
@@ -95,6 +116,9 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
+            EmployeeTypes = await _employeeService.GetEmployeeTypesAsync();
+
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
@@ -148,6 +172,11 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                // Plusz property beállítások
+                user.Name = Input.Name;
+                user.Description = Input.Description;
+                user.Type = Input.Type;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
