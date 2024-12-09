@@ -363,5 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # appsettings.json és minden environment-specifikus variánsa
-appsettings.json
-appsettings.*.json
+DrPetClinic.Web/appsettings.*.json
+
