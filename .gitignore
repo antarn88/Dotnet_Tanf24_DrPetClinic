@@ -362,6 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# appsettings.json és minden environment-specifikus variánsa
-DrPetClinic.Web/appsettings.*.json
-
+# appsettings.json és az összes environment-specifikus verzió
+appsettings.json
+appsettings.*.json
