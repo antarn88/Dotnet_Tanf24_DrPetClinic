@@ -3,6 +3,7 @@ using DrPetClinic.Bll.MappingProfiles;
 using DrPetClinic.Bll.Services;
 using DrPetClinic.Data;
 using DrPetClinic.Data.Entities;
+using DrPetClinic.Data.SeedIdentityData;
 using DrPetClinic.Web.Services;
 using DrPetClinic.Web.Settings;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +16,7 @@ namespace DrPetClinic.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +67,8 @@ namespace DrPetClinic.Web
             builder.Services.AddAutoMapper(typeof(TreatmentProfile));
 
             // Service-ek
+            builder.Services.AddScoped<IRoleSeedService, RoleSeedService>();
+            builder.Services.AddScoped<IUserSeedService, UserSeedService>();
             builder.Services.AddScoped<IConsultationTimeService, ConsultationTimeService>();
             builder.Services.AddScoped<IAnimalService, AnimalService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
@@ -82,9 +85,18 @@ namespace DrPetClinic.Web
 
             var app = builder.Build();
 
-            var cultureInfo = new System.Globalization.CultureInfo("hu-HU");
+            // Nyelvi beállítások
+            var cultureInfo = new CultureInfo("hu-HU");
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+            // Role seedelése
+            var roleSeeder = app.Services.CreateScope().ServiceProvider.GetRequiredService<IRoleSeedService>();
+            await roleSeeder.SeedRoleAsync();
+
+            // User seedelése
+            var userSeeder = app.Services.CreateScope().ServiceProvider.GetRequiredService<IUserSeedService>();
+            await userSeeder.SeedUserAsync();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
