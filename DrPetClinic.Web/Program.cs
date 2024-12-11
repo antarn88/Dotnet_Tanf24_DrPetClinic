@@ -21,7 +21,6 @@ namespace DrPetClinic.Web
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorPages();
             builder.Services.AddDbContext<DrPetClinicDBContext>(options =>
             {
                 options.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)); // Enélkül exception-t kaptam migrációkor!
@@ -83,6 +82,19 @@ namespace DrPetClinic.Web
                 options.ClientSecret = builder.Configuration.GetSection("Authentication:Google:ClientSecret").Value!;
             });
 
+            builder.Services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("RequiredAssistantRole", policy => policy.RequireRole("Assistants"));
+                auth.AddPolicy("RequiredDoctorRole", policy => policy.RequireRole("Doctors"));
+                auth.AddPolicy("RequiredAssistantOrDoctorRole", policy => policy.RequireRole(["Assistants", "Doctors"]));
+            });
+
+            builder.Services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Admin", "RequiredDoctorRole");
+                options.Conventions.AuthorizeFolder("/Assistant", "RequiredAssistantOrDoctorRole");
+            });
+
             var app = builder.Build();
 
             // Nyelvi beállítások
@@ -113,6 +125,31 @@ namespace DrPetClinic.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // A UseAuthentication és UseAuthorization után vizsgáljuk és levédjük a register oldalt!
+            app.Use(async (context, next) =>
+            {
+                var path = context.Request.Path;
+                if (path.StartsWithSegments("/Identity/Account/Register") && !context.User.IsInRole("Doctors"))
+                {
+                    if (context.User.Identity != null && context.User.Identity.IsAuthenticated)
+                    {
+                        // Ha be van jelentkezve, akkor AccessDenied
+                        context.Response.Redirect("AccessDenied");
+                    }
+                    else
+                    {
+                        // Ha nincs bejelentkezve, irányítás a Login oldalra ReturnUrl paraméterrel
+                        var returnUrl = context.Request.Path + context.Request.QueryString;
+                        var loginUrl = $"Login?ReturnUrl={Uri.EscapeDataString(returnUrl)}";
+                        context.Response.Redirect(loginUrl);
+                    }
+                    return;
+                }
+
+                await next();
+            });
+
 
             app.MapRazorPages();
 

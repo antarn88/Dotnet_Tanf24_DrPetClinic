@@ -182,6 +182,9 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user);
+
+                await _userManager.AddToRoleAsync(user, user.Type == EmployeeType.Doctor ? "Doctors" : "Assistants");
+
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);

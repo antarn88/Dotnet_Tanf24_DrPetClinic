@@ -21,27 +21,33 @@
                 </button>
 
                 <div class="right-section d-flex flex-row gap-2">
-                    @* Admin *@
-                    <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Admin
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" asp-page="/Admin/Doctors/Index">Orvosok</a></li>
-                        </ul>
-                    </div>
+                    @* Doktor / Admin *@
+                    @if (User.IsInRole("Doctors"))
+                    {
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Admin
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-page="/Admin/Doctors/Index">Orvosok</a></li>
+                            </ul>
+                        </div>
+                    }
 
                     @* Asszisztens *@
-                    <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Asszisztens
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" asp-page="/Assistant/Animals/Index">Állatok</a></li>
-                        </ul>
-                    </div>
+                    @if (User.IsInRole("Doctors") || User.IsInRole("Assistants"))
+                    {
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Asszisztens
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-page="/Assistant/Animals/Index">Állatok</a></li>
+                            </ul>
+                        </div>
+                    }
 
                     <partial name="_LoginPartial" />
                 </div>

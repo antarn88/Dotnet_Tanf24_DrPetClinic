@@ -18,5 +18,10 @@ public class RoleSeedService : IRoleSeedService
     {
       await roleManager.CreateAsync(new IdentityRole<Guid> { Name = "Doctors" });
     }
+
+    if (!await roleManager.RoleExistsAsync("Assistants"))
+    {
+      await roleManager.CreateAsync(new IdentityRole<Guid> { Name = "Assistants" });
+    }
   }
 }
