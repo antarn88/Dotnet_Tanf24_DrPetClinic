@@ -93,6 +93,7 @@ namespace DrPetClinic.Web
             {
                 options.Conventions.AuthorizeFolder("/Admin", "RequiredDoctorRole");
                 options.Conventions.AuthorizeFolder("/Assistant", "RequiredAssistantOrDoctorRole");
+                options.Conventions.AuthorizeAreaPage("Identity", "/Account/Register", "RequiredDoctorRole");
             });
 
             var app = builder.Build();
@@ -125,30 +126,6 @@ namespace DrPetClinic.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            // A UseAuthentication és UseAuthorization után vizsgáljuk és levédjük a register oldalt!
-            app.Use(async (context, next) =>
-            {
-                var path = context.Request.Path;
-                if (path.StartsWithSegments("/Identity/Account/Register") && !context.User.IsInRole("Doctors"))
-                {
-                    if (context.User.Identity != null && context.User.Identity.IsAuthenticated)
-                    {
-                        // Ha be van jelentkezve, akkor AccessDenied
-                        context.Response.Redirect("AccessDenied");
-                    }
-                    else
-                    {
-                        // Ha nincs bejelentkezve, irányítás a Login oldalra ReturnUrl paraméterrel
-                        var returnUrl = context.Request.Path + context.Request.QueryString;
-                        var loginUrl = $"Login?ReturnUrl={Uri.EscapeDataString(returnUrl)}";
-                        context.Response.Redirect(loginUrl);
-                    }
-                    return;
-                }
-
-                await next();
-            });
 
 
             app.MapRazorPages();
