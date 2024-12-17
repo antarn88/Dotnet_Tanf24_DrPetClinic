@@ -2,6 +2,7 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    int index = 0;
 }
 
 <div class="mt-5">
@@ -10,5 +11,22 @@
 
 <div class="container mt-5">
     <h1 class="text-center mb-3">Orvosaink</h1>
-    @await Html.PartialAsync("DoctorCarousel", Model.Doctors)
+
+    <div id="doctorCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @foreach (var doctor in Model.Doctors)
+            {
+                @await Component.InvokeAsync("DoctorCard", new { doctor, index })
+                index++;
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#doctorCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Előző</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#doctorCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Következő</span>
+        </button>
+    </div>
 </div>

@@ -1,0 +1,21 @@
+﻿@model DrPetClinic.Bll.DTOs.EmployeeDto
+@{
+    var doctor = Model;
+    var i = (int)(ViewData["Index"])!;
+    var isActive = i == 0 ? "active" : "";
+}
+
+<div class="carousel-item @(isActive)">
+    <div class="card mx-auto d-flex flex-column align-items-center text-light doctor-card" style="width: 18rem; height: 100%;">
+        <div class="d-flex align-items-center justify-content-center" style="height: 250px; width: 100%;">
+            <img src="~/images/doctors/doctor@((i % 5) + 1).jpg" class="card-img-top img-fluid" alt="@doctor.Name"
+                style="height: 100%; object-fit: cover;">
+        </div>
+        <div class="card-body text-center d-flex justify-content-center align-items-center flex-column">
+            <a asp-page="/DoctorDetails/Index" asp-route-OrvosId="@doctor.Id" class="text-decoration-none">
+                <h5 class="card-title cursor-pointer">@doctor.Name</h5>
+            </a>
+            <p class="card-text">@doctor.Description</p>
+        </div>
+    </div>
+</div>
