@@ -1,0 +1,45 @@
+﻿@model Dictionary<string, List<DrPetClinic.Bll.DTOs.ConsultationTimeDto>>
+@using DrPetClinic.Bll.Helpers
+@using Newtonsoft.Json
+
+@{
+    var monthMapJson = JsonConvert.SerializeObject(DateHelper.HungarianMonthNames);
+}
+
+@* Havi Nézet régi *@
+<div class="d-flex justify-content-between mb-3">
+    <button class="btn btn-primary btn-previous" onclick='changeMonth("previous", @Html.Raw(monthMapJson))'>⬅️ Előző
+        hónap</button>
+    <button class="btn btn-primary btn-next" onclick='changeMonth("next", @Html.Raw(monthMapJson))'>Következő hónap ➡️</button>
+</div>
+
+<table class="table table-striped table-hover table-bordered consultation-times-monthly-table">
+    <thead>
+        <tr>
+            <th>Orvos</th>
+            <th>Év</th>
+            <th>Hónap</th>
+            <th>Rendelési Idők</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="4" class="text-center">A megadott időszakra nincsenek megjeleníthető rendelések.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var group in Model)
+            {
+                <tr>
+                    <td>@group.Key</td>
+                    <td>@group.Value.First().Year</td>
+                    <td>@DateHelper.GetHungarianMonthName(group.Value.First().Month)</td>
+                    <td>@Html.Raw(DateHelper.FormatWeeklyConsultationTimes(group.Value))</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

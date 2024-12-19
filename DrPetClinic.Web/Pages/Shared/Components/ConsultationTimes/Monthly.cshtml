@@ -1,0 +1,23 @@
+﻿@model dynamic
+
+<h2 class="mt-5">Havi Nézet</h2>
+
+<form method="get">
+    <div class="mb-3">
+        <label for="startDate" class="form-label">Kezdő dátum</label>
+        <input type="date" name="startDate" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="endDate" class="form-label">Záró dátum</label>
+        <input type="date" name="endDate" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Szűrés</button>
+</form>
+
+@if (Model != null)
+{
+    <h3 class="mt-5">Eredmény:</h3>
+    <p>@Model.Data</p>
+}

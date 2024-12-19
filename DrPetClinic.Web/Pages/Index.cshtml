@@ -6,7 +6,9 @@
 }
 
 <div class="mt-5">
-    @await Html.PartialAsync("ConsultationTimeWeeklyTable", Model.GroupedConsultationTimes)
+    @* @await Html.PartialAsync("ConsultationTimeWeeklyTable", Model.GroupedConsultationTimes) *@
+
+    @await Component.InvokeAsync("ConsultationTimes", new { mode = DrPetClinic.Web.Enums.ViewMode.Weekly })
 </div>
 
 <div class="container mt-5">
