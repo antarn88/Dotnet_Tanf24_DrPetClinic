@@ -20,11 +20,13 @@ namespace DrPetClinic.Web.Pages.DoctorDetails
         public Dictionary<string, List<ConsultationTimeDto>> ConsultationTimes { get; set; }
         public string DoctorName { get; set; } = string.Empty;
 
+        public EmployeeDetailsDto Doctor { get; set; }
+
         public async Task OnGetAsync(Guid orvosId)
         {
-            var doctor = await _employeeService.GetEmployeeByIdAsync(orvosId);
+            Doctor = await _employeeService.GetEmployeeByIdAsync(orvosId);
 
-            DoctorName = doctor.Name;
+            DoctorName = Doctor.Name;
             ConsultationTimes = await _consultationTimeService.GetConsultationTimesForNextThreeMonthsGroupedByWeekAsync(orvosId);
         }
 

@@ -94,6 +94,62 @@ namespace DrPetClinic.Bll.Services
             return _mapper.Map<Dictionary<string, List<ConsultationTimeDto>>>(groupedByWeek);
         }
 
+        public async Task<Dictionary<string, List<ConsultationTimeDto>>> GetConsultationTimesGroupedByWeekAsync(Guid employeeId, DateTime startDate, DateTime endDate)
+        {
+            // Az endDate a nap végére állítása
+            endDate = endDate.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+            var consultationTimes = await _context.ConsultationTimes
+                .Include(ct => ct.Employee)
+                .Where(ct => ct.EmployeeId == employeeId
+                    && (ct.Year > startDate.Year || (ct.Year == startDate.Year && ct.Week >= GetWeekNumber(startDate)))
+                    && (ct.Year < endDate.Year || (ct.Year == endDate.Year && ct.Week <= GetWeekNumber(endDate))))
+                .OrderBy(ct => ct.Year)
+                .ThenBy(ct => ct.Week)
+                .ThenBy(ct => ct.DayOfWeek)
+                .ToListAsync();
+
+            // Opció: Kliensoldali további szűrés (ha szükséges)
+            var filteredConsultationTimes = consultationTimes
+                .Where(ct => IsDateInRange(ct.Year, ct.Month, ct.DayOfWeek, startDate, endDate))
+                .ToList();
+
+            var groupedByWeek = filteredConsultationTimes
+                .GroupBy(ct => $"{ct.Year}-{ct.Month}-{ct.Week}")
+                .ToDictionary(g => g.Key, g => g.OrderBy(ct => ct.DayOfWeek).ToList());
+
+            return _mapper.Map<Dictionary<string, List<ConsultationTimeDto>>>(groupedByWeek);
+        }
+
+        // Hetek kiszámítása egy adott dátumhoz
+        private int GetWeekNumber(DateTime date)
+        {
+            var culture = CultureInfo.CurrentCulture;
+            return culture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        }
+
+        private bool IsDateInRange(short year, byte month, DayOfWeek dayOfWeek, DateTime startDate, DateTime endDate)
+        {
+            // Dátum összeállítása az adott év, hónap és hét alapján
+            var daysInMonth = DateTime.DaysInMonth(year, month);
+
+            // Iteráljuk végig a hónap napjait, és keressük meg az adott napot
+            for (var day = 1; day <= daysInMonth; day++)
+            {
+                var currentDate = new DateTime(year, month, day);
+                if (currentDate.DayOfWeek == dayOfWeek)
+                {
+                    // Ellenőrizzük, hogy a dátum a tartományon belül van-e
+                    if (currentDate >= startDate && currentDate <= endDate)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false; // Ha nincs találat, nem esik a tartományba
+        }
+
         public async Task<List<ConsultationTimeDto>> GetPagedConsultationTimesAsync(int page, int limit)
         {
             var consultationTimes = await _context.ConsultationTimes

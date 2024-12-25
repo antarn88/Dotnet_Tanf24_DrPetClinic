@@ -54,5 +54,14 @@ namespace DrPetClinic.Bll.Helpers
                 .OrderBy(ct => ct.DayOfWeek)
                 .Select(ct => $"{GetHungarianDayOfWeek(ct.DayOfWeek)} {ct.StartTime:hh\\:mm}-{ct.EndTime:hh\\:mm}"));
         }
+
+        public static DateTime GetDateFromYearAndWeek(int year, int week, DayOfWeek dayOfWeek)
+        {
+            var firstDayOfYear = new DateTime(year, 1, 1);
+            var daysOffset = DayOfWeek.Monday - firstDayOfYear.DayOfWeek;
+            var firstMonday = firstDayOfYear.AddDays(daysOffset);
+            var weekStart = firstMonday.AddDays((week - 1) * 7);
+            return weekStart.AddDays((int)dayOfWeek);
+        }
     }
 }

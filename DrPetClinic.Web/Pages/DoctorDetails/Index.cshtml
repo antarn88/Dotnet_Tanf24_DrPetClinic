@@ -8,7 +8,13 @@
     <h1>@ViewData["Title"]</h1>
 </div>
 
-@await Component.InvokeAsync("ConsultationTimes", new { mode = DrPetClinic.Web.Enums.ViewMode.Monthly })
+@await Component.InvokeAsync("ConsultationTimes", new
+    {
+        mode = DrPetClinic.Web.Enums.ViewMode.Monthly,
+        doctorId = Model.Doctor.Id,
+        startDate = Request.Query["startDate"].ToString(),
+        endDate = Request.Query["endDate"].ToString()
+    })
 
 @* @if (Model.ConsultationTimes == null || !Model.ConsultationTimes.Any())
 {

@@ -1,23 +1,84 @@
-﻿@model dynamic
+﻿@model DrPetClinic.Web.ViewModels.MonthlyConsultationViewModel
+@using DrPetClinic.Bll.Helpers
+@using DrPetClinic.Web.ViewModels
+@using Newtonsoft.Json
 
-<h2 class="mt-5">Havi Nézet</h2>
+@{
+    var monthMapJson = JsonConvert.SerializeObject(DateHelper.HungarianMonthNames);
+    var now = DateTime.Now;
+}
 
-<form method="get">
+<form method="get" class="my-4">
     <div class="mb-3">
         <label for="startDate" class="form-label">Kezdő dátum</label>
-        <input type="date" name="startDate" class="form-control" required />
+        <input type="date" name="startDate" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")" required />
     </div>
 
     <div class="mb-3">
         <label for="endDate" class="form-label">Záró dátum</label>
-        <input type="date" name="endDate" class="form-control" required />
+        <input type="date" name="endDate" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")" required />
     </div>
 
     <button type="submit" class="btn btn-primary">Szűrés</button>
 </form>
 
-@if (Model != null)
+@if (Model.StartDate == null || Model.EndDate == null)
 {
-    <h3 class="mt-5">Eredmény:</h3>
-    <p>@Model.Data</p>
+    <p class="fw-bold">Nincs megadva a kezdő dátum vagy a záró dátum!</p>
+}
+else if (Model.ConsultationTimes == null || !Model.ConsultationTimes.Any())
+{
+    <p class="fw-bold">Nincs elérhető rendelés az adott időszakra!</p>
+}
+else
+{
+    <table class="table table-striped table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>Év</th>
+                <th>Hónap</th>
+                <th>Hét</th>
+                <th>Rendelési Idő</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var weekGroup in Model.ConsultationTimes)
+            {
+                var parts = weekGroup.Key.Split('-');
+                if (parts.Length != 3) { continue; }
+
+                bool isYearParsed = int.TryParse(parts[0], out int year);
+                bool isMonthParsed = int.TryParse(parts[1], out int month);
+                bool isWeekParsed = int.TryParse(parts[2], out int week);
+
+                if (!isYearParsed || !isMonthParsed || !isWeekParsed) { continue; }
+
+                // Sor színezése a múltbeli időpontokhoz
+                var isPast = weekGroup.Value.Any(ct =>
+                {
+                    var currentDate = DateHelper.GetDateFromYearAndWeek(ct.Year, ct.Week, ct.DayOfWeek);
+                    return currentDate < now;
+                });
+
+                var rowClass = isPast ? "inactive-table-row text-muted" : ""; // CSS osztály a szürkézéshez
+
+                <tr class="@rowClass">
+                    <td>@year</td>
+                    <td>@DateHelper.GetHungarianMonthName(month)</td>
+                    <td>@week</td>
+                    <td>
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var consultation in weekGroup.Value.OrderBy(ct => ct.DayOfWeek))
+                            {
+                                <li>
+                                    <strong>@DateHelper.GetHungarianDayOfWeek(consultation.DayOfWeek):</strong>
+                                    @consultation.StartTime.ToString(@"hh\:mm") - @consultation.EndTime.ToString(@"hh\:mm")
+                                </li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
