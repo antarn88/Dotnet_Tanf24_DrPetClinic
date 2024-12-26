@@ -1,0 +1,14 @@
+{
+  "version": "3.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jasny-bootstrap@4.0.0",
+      "destination": "wwwroot/lib/jasny-bootstrap/"
+    },
+    {
+      "library": "tinymce@7.6.0",
+      "destination": "wwwroot/lib/tinymce/"
+    }
+  ]
+}

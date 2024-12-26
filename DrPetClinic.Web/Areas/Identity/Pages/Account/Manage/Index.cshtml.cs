@@ -17,13 +17,16 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<Employee> _userManager;
         private readonly SignInManager<Employee> _signInManager;
+        private readonly IWebHostEnvironment _environment;
 
         public IndexModel(
             UserManager<Employee> userManager,
-            SignInManager<Employee> signInManager)
+            SignInManager<Employee> signInManager,
+            IWebHostEnvironment environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _environment = environment;
         }
 
         public string Username { get; set; }
@@ -39,7 +42,6 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
         public EmployeeType EmployeeType { get; set; }
 
 
-
         public class InputModel
         {
             [Required]
@@ -52,6 +54,15 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
             // [Required]
             [Display(Name = "Type")]
             public string Type { get; set; }
+
+
+            [Display(Name = "Image")]
+            public IFormFile Image { get; set; }
+
+
+            [Display(Name = "ImageFileName")]
+            public string ImageFileName { get; set; }
+
         }
 
         private async Task LoadAsync(Employee user)
@@ -66,7 +77,8 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
             {
                 Name = userCustomData.Name,
                 Description = userCustomData.Description,
-                Type = userCustomData.Type.ToString()
+                Type = userCustomData.Type.ToString(),
+                ImageFileName = userCustomData.ImageFileName
             };
         }
 
@@ -116,6 +128,56 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
                 {
                     StatusMessage = "Unexpected error when trying to set users custom data.";
                     return RedirectToPage();
+                }
+            }
+
+            // Képfeltöltés
+            if (Input.Image == null || Input.Image.Length == 0)
+            {
+                user.ImageFileName = "no_pics.jpg";
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set users custom data.";
+                    return RedirectToPage();
+                }
+            }
+            else
+            {
+                var fileName = Input.Image.FileName;
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    var ext = Path.GetExtension(fileName).ToLowerInvariant();
+
+                    if (string.IsNullOrEmpty(ext))
+                    {
+                        ModelState.AddModelError("Input.Image", "A kép kiterjesztése nem megfelelő");
+                        return RedirectToPage();
+                    }
+
+                    var guid = Guid.NewGuid();
+                    var directoryPath = Path.Combine(_environment.WebRootPath, "images/profileImages");
+                    var filePath = Path.Combine(directoryPath, $"{guid}{ext}");
+
+                    user.ImageFileName = $"{guid}{ext}";
+
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await Input.Image.CopyToAsync(stream);
+                        var result = await _userManager.UpdateAsync(user);
+
+                        if (!result.Succeeded)
+                        {
+                            StatusMessage = "Unexpected error when trying to set users custom data.";
+                            return RedirectToPage();
+                        }
+                    }
                 }
             }
 

@@ -2,26 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using DrPetClinic.Bll.Services;
 using DrPetClinic.Data.Entities;
 using DrPetClinic.Data.Enums;
 using DrPetClinic.Bll.Helpers;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 
 namespace DrPetClinic.Web.Areas.Identity.Pages.Account
 {
@@ -34,6 +27,7 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IEmployeeService _employeeService;
+        private readonly IWebHostEnvironment _environment;
 
         public RegisterModel(
             UserManager<Employee> userManager,
@@ -41,7 +35,8 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
             SignInManager<Employee> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IEmployeeService employeeService
+            IEmployeeService employeeService,
+            IWebHostEnvironment environment
             )
         {
             _userManager = userManager;
@@ -51,6 +46,7 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _employeeService = employeeService;
+            _environment = environment;
         }
 
         /// <summary>
@@ -119,6 +115,12 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "Image")]
+            public IFormFile Image { get; set; }
+
+            [Display(Name = "ImageFileName")]
+            public string ImageFileName { get; set; }
         }
 
 
@@ -143,6 +145,43 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account
                 user.Name = Input.Name;
                 user.Description = Input.Description;
                 user.Type = Input.Type;
+
+                if (Input.Image == null || Input.Image.Length == 0)
+                {
+                    user.ImageFileName = "no_pics.jpg";
+                }
+                else
+                {
+                    var fileName = Input.Image.FileName;
+                    if (!string.IsNullOrEmpty(fileName))
+                    {
+                        var ext = Path.GetExtension(fileName).ToLowerInvariant();
+
+                        if (string.IsNullOrEmpty(ext))
+                        {
+                            ModelState.AddModelError("Input.Image", "A kép kiterjesztése nem megfelelő");
+
+                            await OnGetAsync(returnUrl);
+                            return Page();
+                        }
+
+                        var guid = Guid.NewGuid();
+                        var directoryPath = Path.Combine(_environment.WebRootPath, "images/profileImages");
+                        var filePath = Path.Combine(directoryPath, $"{guid}{ext}");
+
+                        user.ImageFileName = $"{guid}{ext}";
+
+                        if (!Directory.Exists(directoryPath))
+                        {
+                            Directory.CreateDirectory(directoryPath);
+                        }
+
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await Input.Image.CopyToAsync(stream);
+                        }
+                    }
+                }
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

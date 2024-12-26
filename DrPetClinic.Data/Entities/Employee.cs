@@ -9,6 +9,7 @@ namespace DrPetClinic.Data.Entities
     {
         public string Name { get; set; }
         public string? Description { get; set; }
+        public string? ImageFileName { get; set; }
         public EmployeeType Type { get; set; }
 
         public ICollection<ConsultationTime>? ConsultationTimes { get; set; } = [];
