@@ -15,7 +15,7 @@
             <a asp-page="/DoctorDetails/Index" asp-route-OrvosId="@doctor.Id" class="text-decoration-none">
                 <h5 class="card-title cursor-pointer">@doctor.Name</h5>
             </a>
-            <p class="card-text">@doctor.Description</p>
+            <p class="card-text">@Html.Raw(doctor.Description)</p>
         </div>
     </div>
 </div>

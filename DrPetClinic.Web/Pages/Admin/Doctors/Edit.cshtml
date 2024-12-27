@@ -28,7 +28,7 @@
     <div class="row mb-3">
       <div class="col-4">
         <label asp-for="Doctor.Description">Leírás</label>
-        <input asp-for="Doctor.Description" class="form-control" />
+        <textarea asp-for="Doctor.Description" class="form-control" rows="10"></textarea>
         <span asp-validation-for="Doctor.Description" class="text-danger"></span>
       </div>
     </div>
@@ -121,7 +121,17 @@
 </div>
 
 @section Scripts {
+  <script src="~/lib/tinymce/tinymce.min.js"></script>
+
   <script>
+    tinymce.init({
+      selector: '#Doctor_Description',
+      width: '100%',
+      height: '300',
+      plugins: 'link image code',
+      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code | link image'
+    });
+
     function addRow() {
       const tbody = document.getElementById("consultation-times");
       const rowCount = tbody.querySelectorAll("tr").length;
@@ -129,28 +139,28 @@
       const newRow = document.createElement("tr");
 
       newRow.innerHTML = `
-            <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Year" class="form-control" /></td>
-            <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Month" class="form-control" /></td>
-            <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Week" class="form-control" /></td>
-            <td>
-                <select name="Doctor.ConsultationTimes[${rowCount}].DayOfWeek" class="form-control">
-                    <option value="Monday">Hétfő</option>
-                    <option value="Tuesday">Kedd</option>
-                    <option value="Wednesday">Szerda</option>
-                    <option value="Thursday">Csütörtök</option>
-                    <option value="Friday">Péntek</option>
-                    <option value="Saturday">Szombat</option>
-                    <option value="Sunday">Vasárnap</option>
-                </select>
-            </td>
-            <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].StartTime" class="form-control" /></td>
-            <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].EndTime" class="form-control" /></td>
-            <td>
-              <input type="hidden" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" value="false" />
-              <input type="checkbox" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" class="form-check-input" />
-            </td>
-            <td><input type="text" name="Doctor.ConsultationTimes[${rowCount}].Description" class="form-control" /></td>
-        `;
+        <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Year" class="form-control" /></td>
+        <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Month" class="form-control" /></td>
+        <td><input type="number" name="Doctor.ConsultationTimes[${rowCount}].Week" class="form-control" /></td>
+        <td>
+            <select name="Doctor.ConsultationTimes[${rowCount}].DayOfWeek" class="form-control">
+                <option value="Monday">Hétfő</option>
+                <option value="Tuesday">Kedd</option>
+                <option value="Wednesday">Szerda</option>
+                <option value="Thursday">Csütörtök</option>
+                <option value="Friday">Péntek</option>
+                <option value="Saturday">Szombat</option>
+                <option value="Sunday">Vasárnap</option>
+            </select>
+        </td>
+        <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].StartTime" class="form-control" /></td>
+        <td><input type="time" name="Doctor.ConsultationTimes[${rowCount}].EndTime" class="form-control" /></td>
+        <td>
+          <input type="hidden" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" value="false" />
+          <input type="checkbox" name="Doctor.ConsultationTimes[${rowCount}].IsAvailable" class="form-check-input" />
+        </td>
+        <td><input type="text" name="Doctor.ConsultationTimes[${rowCount}].Description" class="form-control" /></td>
+                                    `;
 
       tbody.appendChild(newRow);
     }

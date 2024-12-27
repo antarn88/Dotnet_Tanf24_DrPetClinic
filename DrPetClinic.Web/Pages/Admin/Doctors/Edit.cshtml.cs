@@ -2,6 +2,7 @@ using AutoMapper;
 using DrPetClinic.Bll.DTOs;
 using DrPetClinic.Bll.Interfaces;
 using DrPetClinic.Bll.Services;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -52,7 +53,7 @@ namespace DrPetClinic.Web.Pages.Admin.Doctors
                     StartTime = ct.StartTime,
                     EndTime = ct.EndTime,
                     IsAvailable = ct.IsAvailable,
-                    Description = ct.Description,
+                    Description = new HtmlSanitizer().Sanitize(ct.Description ?? ""),
                     EmployeeId = Doctor.Id
                 })
                 .ToList();

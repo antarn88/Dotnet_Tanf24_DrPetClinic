@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using DrPetClinic.Data.Enums;
+using Ganss.Xss;
 
 
 namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
@@ -122,7 +123,7 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
 
             if (Input.Description != userCustomData.Description)
             {
-                user.Description = Input.Description;
+                user.Description = new HtmlSanitizer().Sanitize(Input.Description);
                 var result = await _userManager.UpdateAsync(user);
                 if (!result.Succeeded)
                 {
@@ -132,51 +133,37 @@ namespace DrPetClinic.Web.Areas.Identity.Pages.Account.Manage
             }
 
             // Képfeltöltés
-            if (Input.Image == null || Input.Image.Length == 0)
+            var fileName = Input.Image.FileName;
+            if (!string.IsNullOrEmpty(fileName))
             {
-                user.ImageFileName = "no_pics.jpg";
-                var result = await _userManager.UpdateAsync(user);
+                var ext = Path.GetExtension(fileName).ToLowerInvariant();
 
-                if (!result.Succeeded)
+                if (string.IsNullOrEmpty(ext))
                 {
-                    StatusMessage = "Unexpected error when trying to set users custom data.";
+                    ModelState.AddModelError("Input.Image", "A kép kiterjesztése nem megfelelő");
                     return RedirectToPage();
                 }
-            }
-            else
-            {
-                var fileName = Input.Image.FileName;
-                if (!string.IsNullOrEmpty(fileName))
+
+                var guid = Guid.NewGuid();
+                var directoryPath = Path.Combine(_environment.WebRootPath, "images/profileImages");
+                var filePath = Path.Combine(directoryPath, $"{guid}{ext}");
+
+                user.ImageFileName = $"{guid}{ext}";
+
+                if (!Directory.Exists(directoryPath))
                 {
-                    var ext = Path.GetExtension(fileName).ToLowerInvariant();
+                    Directory.CreateDirectory(directoryPath);
+                }
 
-                    if (string.IsNullOrEmpty(ext))
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    await Input.Image.CopyToAsync(stream);
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if (!result.Succeeded)
                     {
-                        ModelState.AddModelError("Input.Image", "A kép kiterjesztése nem megfelelő");
+                        StatusMessage = "Unexpected error when trying to set users custom data.";
                         return RedirectToPage();
-                    }
-
-                    var guid = Guid.NewGuid();
-                    var directoryPath = Path.Combine(_environment.WebRootPath, "images/profileImages");
-                    var filePath = Path.Combine(directoryPath, $"{guid}{ext}");
-
-                    user.ImageFileName = $"{guid}{ext}";
-
-                    if (!Directory.Exists(directoryPath))
-                    {
-                        Directory.CreateDirectory(directoryPath);
-                    }
-
-                    using (var stream = System.IO.File.Create(filePath))
-                    {
-                        await Input.Image.CopyToAsync(stream);
-                        var result = await _userManager.UpdateAsync(user);
-
-                        if (!result.Succeeded)
-                        {
-                            StatusMessage = "Unexpected error when trying to set users custom data.";
-                            return RedirectToPage();
-                        }
                     }
                 }
             }
